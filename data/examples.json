@@ -1,0 +1,24 @@
+{
+  "examples": [
+  	{
+  		"value": "example1/",
+  		"text": "Example 1"
+  	},
+  	{
+  		"value": "example2/",
+  		"text": "Example 2"
+  	},
+  	{
+  		"value": "example3/",
+  		"text": "Example 3"
+  	},
+  	{
+  		"value": "example4/",
+  		"text": "Example 4"
+  	},
+  	{
+  		"value": "example5/",
+  		"text": "Example 5"
+  	}
+  ]
+}
