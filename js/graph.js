@@ -10,19 +10,19 @@
  */
 const SVG_WIDTH = screen.availWidth; //1500
 const SVG_HEIGTH = screen.availHeight; //652
-const LINK_COLOR = "#B0E0E6";
-const SUPERNODE_COLOR = "#FFDAB9";
-const SUPERNODE_SIZE = 300;
+const LINK_COLOR = "#B0E0E6";//"#B0E0E6";
+const SUPERNODE_COLOR = "#FFCBA3";//"#FFDAB9";
+const SUPERNODE_SIZE = 360; //300
 const INTERNAL_NODE_COLOR = "#BCA8E6";
-const INTERNAL_NODE_SIZE = 170;
-const LABEL_COLOR = "#957DAD"; //8D67D5
-const IMG_SIZE = 70;
+const INTERNAL_NODE_SIZE = 200;
+const LABEL_COLOR = "#782664";//"#782664"; 
+const IMG_SIZE = 100;
 
 /**
  * Constantes para el sistema de fuerzas
  */
 const GRAVITY = 0.05;
-const CHARGE = -2000;
+const CHARGE = -4000; //-2000
 
 /**
  * Variables globales
@@ -37,10 +37,10 @@ function init_svg(id) {
 			.append('svg')
 			.attr("width", SVG_WIDTH)
 			.attr("height", SVG_HEIGTH)
-			.attr({
+			/*.attr({
 					"width": "100%",
 					"height": "100%"
-				})
+				})*/
 			.attr("viewBox", "0 0 " + SVG_WIDTH + " " + SVG_HEIGTH );
 
 };
@@ -119,7 +119,7 @@ function clickedZoom(value) {
  * @return devuelve el objeto con el sistema de fuerzas inicializado.
  */
 function configure_forces(nodes, links) {
-	let DISTANCE = 20;
+	let DISTANCE = 5;
 	
 	// to change the distance of the links according to the number of nodes in the supernode
 	if (get_length_attributes(nodes) >= 2 && get_length_attributes(nodes) < 5){
@@ -229,7 +229,7 @@ function paint_supernode(groups, groupIds, nodes, size, color) {
 					  .append('path')
 					  .attr("stroke", color) // SUPERNODE_COLOR
 					  .attr("fill", color)
-					  .style("opacity", .2)
+					  .style("opacity", 0.5)
 					  .style("stroke-width", size) //300
 					  .style("stroke-linecap", "round")
 					  .style("stroke-linejoin", "round");	
@@ -237,13 +237,15 @@ function paint_supernode(groups, groupIds, nodes, size, color) {
 	
 	
 	// to change the dimensions of the supernode according to the number of the nodes inside the supernode
-	if (get_length_attributes(nodes) > 2 && get_length_attributes(nodes) < 5){
-		paths.style("stroke-width", (size - 20)); //280
-	} else if (get_length_attributes(nodes) === 2){ 
-		paths.style("stroke-width", (size - 60)); //240		
-	} else if (get_length_attributes(nodes) === 1){
-		paths.style("stroke-width", (size - 80)); //150
-	}
+	//if (get_length_attributes(nodes) > 2 && get_length_attributes(nodes) < 5){
+		//paths.style("stroke-width", (size - 20)); //280
+	//} else 
+	if (get_length_attributes(nodes) <= 2){ 
+		paths.style("stroke-width", (size - 60)); //240	
+	}		
+	//} else if (get_length_attributes(nodes) === 1){
+	//	paths.style("stroke-width", (size - 60)); //150
+	//}
 	
 	
 		
@@ -311,9 +313,20 @@ function mousedownNode(d, idx) {
 				my_checkboxes.push(myObject);
 			};
 			
+			// to customize the prompt
+			var locale = {
+				OK: 'Delete',
+				CONFIRM: 'Delete',
+				CANCEL: 'Cancel'
+			};
+						
+			bootbox.addLocale('custom', locale);
+			
+			
 			// show the prompt to the user
 			bootbox.prompt({
 				title: "Click the checkbox of the attributes that you want to delete!",
+				locale: 'custom',
 				//value: attrOriginal,
 				inputType: 'checkbox',
 				inputOptions: my_checkboxes,
@@ -351,7 +364,7 @@ function drawText(node, num_nodes){
 				return IMG_SIZE - 15;
         })
         .attr("dy", 10)
-        .style("font-size", "14px")
+        .style("font-size", "18px")
         .style("font-family", "Trebuchet MS")
 		.style("visibility", function (d) {
         	if (d.type != "attribute")
@@ -366,11 +379,11 @@ function drawText(node, num_nodes){
 	// to add the label for "I recommend you..."
 	node.append("text")
 		.attr("id", "label_recommendation")
-		.attr("dx", -IMG_SIZE)
+		.attr("dx", -IMG_SIZE + 10)
         .attr("dy",function (d) {
         	return IMG_SIZE - 15;
         })
-        .style("font-size", "18px")
+        .style("font-size", "22px")
         .style("font-family", "Trebuchet MS")
 		.style("fill", LABEL_COLOR) 
 		.style("visibility", function (d) {
@@ -390,7 +403,7 @@ function drawText(node, num_nodes){
 				return IMG_SIZE + 40;
 			else return IMG_SIZE + 10;
         })
-        .style("font-size", "18px")
+        .style("font-size", "22px")
         .style("font-family", "Trebuchet MS")
 		.style("fill", LABEL_COLOR)
 		.style("visibility", function (d) {
@@ -404,13 +417,13 @@ function drawText(node, num_nodes){
 	// to add the label for "you watched"
 	node.append("text")
 		.attr("id", "label_recommendation")
-		.attr("dx", IMG_SIZE + 30)
+		.attr("dx", IMG_SIZE + 70)
         .attr("dy", function (d) {
         	if (num_nodes > 2)
 				return IMG_SIZE + 90;
 			else return IMG_SIZE +70;
         })
-        .style("font-size", "18px")
+        .style("font-size", "22px")
         .style("font-family", "Trebuchet MS")
 		.style("fill", LABEL_COLOR)
 		.style("visibility", function (d) {
