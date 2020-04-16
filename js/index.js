@@ -28,7 +28,7 @@ $(function() {
 	//loadSelect();
 	
 	disableSystem();
-	my_current_example = 1;
+	my_current_example = 0;
 	init_svg("#vis");
 });
 
@@ -68,6 +68,19 @@ function loadExample() {
 	// Obtenemos la ruta
 	// let path = "data/" + $("#options").val();
 	
+	if(my_current_example === 0){
+		// Tutorial
+		document.querySelector('#btn_ver').innerText = "Next Step";
+		bootbox.alert("This is the first window in the system! It contains a tutorial. You can see some explanations of the system work if you hover over the buttons with the mouse cursor. ");
+		
+		
+		// Dibujar popups del tutorial
+		drawTutorial();
+	} else if (my_current_example === 5){
+		// Finalización del sistema
+		document.querySelector('#btn_ver').innerText = "Finish";
+	}
+	
 	if(my_current_example <= EXAMPLES_NUM){
 	
 		let path = "data/example" + my_current_example + "/";
@@ -93,6 +106,7 @@ function loadExample() {
 		// Get the best explanation to show
 		paint_graph(currentExplanation.nodes, currentExplanation.links, true);
 		loadExplanationsButtons();
+		drawPopUpBestExplanation();
 
 		//addStep("Loaded " + $("#options option:selected").text());
 		addStep("Loaded Example " + my_current_example);
@@ -112,26 +126,31 @@ function loadExplanationsButtons() {
 
 	let numButtons = currentExample.explanations.length;
 	selectedExplanation = currentExample.currentExplanationIndex;
-
+	
+	
 	for (var i = 0; i < numButtons; i++) {
 		id = 'btn_explanation_' + (i + 1);
-
-		html = '<button id="' 
+		if (i == 0)
+			html = 'The recommendations are...</br>';
+		else
+			html = '';
+		
+		html += '<input id="' 
 				+ id 
-				+ '" type="button" class="btn btn_example';
+				+ '" type="image" class="buttons_movies btn btn_example btn-lg';
 
 		if (i == selectedExplanation)
-			html += ' btn-outline-primary"';
+			html += ' btn-primary"';
 		else
 			html += ' btn-outline-secondary"';
 
+		html += ' src="' + currentExample.getExplanationByIndex(i).getPosterMovieRec() + ');"';
+		
 		// Añadimos los atributos del tooltip
-		html += ' data-title="Best explanation!" data-palcement="bottom';
+		html += ' data-title="Best explanation!" data-placement="bottom"';
 		html += ' data-delay=\'{"show":"3000", "hide":"2000"} data-trigger="manual"\'';
-
-		html += '>Movie ' 
-				+ (i+1) 
-				+ '</button>';
+				
+		html += '></button>';
 
 		$("#explanations_buttons").append(html);
 	}
@@ -148,14 +167,19 @@ function loadExplanationsButtons() {
 			let old_button_id = "#btn_explanation_" + (selectedExplanation + 1);
 			let new_button_id = "#btn_explanation_" + (num_explanation + 1);
 
-			$(old_button_id).removeClass("btn-outline-primary");
-			$(old_button_id).addClass("btn-outline-secondary");
+			// cambiando el color de mi actual boton
+			$(old_button_id).removeClass("btn-primary");
+			if (currentExample.bestExplanationIndex !== selectedExplanation)
+				$(old_button_id).addClass("btn-outline-secondary");
+			else
+				$(old_button_id).addClass("btn-success");
 
+			// cambiando el color del boton sobre el que esto clickando
 			if($(new_button_id).hasClass("btn-success"))
 				$(new_button_id).removeClass("btn-success");
 			else
 				$(new_button_id).removeClass("btn-outline-secondary");
-			$(new_button_id).addClass("btn-outline-primary");
+			$(new_button_id).addClass("btn-primary");
 
 			selectedExplanation = num_explanation;
 
@@ -238,6 +262,12 @@ function endExample(like){
 	disableSystem();
 	my_current_example++; // si el ejemplo es 6 -> pasar al formulario
 	
+	
+	//quitamos el tooltip en caso de que este viendose
+	let index_rec = currentExample.bestExplanationIndex;
+	let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
+	$(rec_botton_id).tooltip( 'hide' );
+	
 	// activamos el boton para pasar al siguiente ejemplo
 	$("#btn_ver").removeClass("disabledbutton");
 };
@@ -289,6 +319,62 @@ function cleanSteps() {
 	$("#steps_list").empty();
 }
 
+
+/*
+	COSAS QUE FALTAN POR HACER:
+	- Cambiar el color de los tooltips que no son de mejor explicaciones
+	- Cambiar el color de las flechitas del tooltip
+	- Desactivar los tooltip cuando no se esta en tutorial. 
+*/
+
+/*
+* Función auxiliar para dibujar los pop ups de la 
+*/
+function drawTutorial(){
+	let trigger = "hover focus";
+	let show = "hide";
+	
+	drawPopUp("#zoomGraph", "You can zoom in or zoom out the explanation!", "top", trigger, show);
+	drawPopUp("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom", trigger, show);
+	//drawPopUp("#btn_ver", "This button is disabled until you finish the task, when you click on the like or dislike buttons!", "left", trigger, show);
+	drawPopUp("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
+	drawPopUp("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
+	drawPopUp("#steps_list", "Here, you can see the steps that you have carried out.", "left", trigger, show);
+	drawPopUp("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore!", "right", trigger, show); 
+};
+
+/*
+* Función auxiliar para dibujar explicaciones en el tutorial
+*/
+function drawPopUp(button_id, msg, place, trigger_type, show){
+	
+	$(button_id).tooltip({
+		title: msg,
+		placement: place,
+		delay: { "show": 700, "hide": 700 },
+		trigger: trigger_type
+	});
+
+	$(button_id).tooltip(show);
+};
+
+/*
+* Función auxiliar para ver el tooltip de mejor explicación
+*/
+function drawPopUpBestExplanation(){
+	let index_rec = currentExample.bestExplanationIndex;
+	let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
+
+	$(rec_botton_id).removeClass("btn-outline-secondary");
+	$(rec_botton_id).addClass("btn-success");
+	
+	drawPopUp(rec_botton_id, "Best explanation!", "bottom", "manual", 'show');
+
+	setTimeout(function(){
+		$(rec_botton_id).tooltip( 'hide' );
+	}, 3000);
+}
+
 /**
  * Función que elimina un atributo de todas las explicaciones
  * que hay cargadas en currentExplanation.
@@ -296,27 +382,20 @@ function cleanSteps() {
  */
 function removeAttribute(attr) {
 	if (currentExample != null) {
+		
+		// cambian los colores del boton actual
+		let index_rec = currentExample.bestExplanationIndex;
+		let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
+
+		$(rec_botton_id).removeClass("btn-success");
+		$(rec_botton_id).addClass("btn-outline-secondary");
+		$(rec_botton_id).tooltip( 'hide' );
+		
 		currentExample.removeAttribute(attr);
 		
 		// Compruebo si hay una mejor explicación
-		if(currentExample.isThereBestExplanation()) {
-			let index_rec = currentExample.bestExplanationIndex;
-			let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
-
-			$(rec_botton_id).removeClass("btn-outline-secondary");
-			$(rec_botton_id).addClass("btn-success");
-			
-			$(rec_botton_id).tooltip({
-				title: "Best explanation!",
-				placement: "bottom",
-				delay: { "show": 700, "hide": 700 },
-				trigger: "manual" 
-			});
-
-			$(rec_botton_id).tooltip('show');
-			setTimeout(function(){
-		      $(rec_botton_id).tooltip( 'hide' );
-		    }, 6000);
+		if(currentExample.isThereBestExplanation()) {	
+			drawPopUpBestExplanation();
 		}
 		
 		// Vuelvo a pintar la explicación

@@ -50,6 +50,11 @@ html, body {
 	margin-bottom: 10px;
 }
 
+.buttons_movies{
+	width: 100px;
+    height: 120px;
+}
+
 .btn_example {
 	margin-right: 10px;
 }
@@ -67,11 +72,11 @@ html, body {
 .scrollbar-primary::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #d8e1f0; /*Original first color: #4285F4*/
+	background-color: #d8e1f0; 
 }
 
 .scrollbar-primary {
-	scrollbar-color: #d8e1f0 #F5F5F5; /*Original first color: #4285F4*/
+	scrollbar-color: #d8e1f0 #F5F5F5; 
 }
 
 .tooltip > .arrow::before {border-bottom-color: #28a745;}

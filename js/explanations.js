@@ -81,6 +81,10 @@ class ExplanationsSet {
 	setCurrentExplanation(index) {
 		this.currentExplanationIndex = index;
 	}
+	
+	getExplanationByIndex(i){
+		return this.explanations[i];
+	}
 
 }
 
@@ -200,6 +204,16 @@ class Explanation {
 		}
 
 		return numAttributes;
+	}
+	
+	
+	/**
+	 * Función que devuelve el poster de la pelicula recomendada
+	 * @return Integer número de nodos de tipo atributo
+	 */
+	getPosterMovieRec(){
+		let recommendation = this.getNodebyId(0, this.nodes);
+		return recommendation.img;
 	}
 
 }

@@ -1,5 +1,9 @@
 {
   "examples": [
+	{
+  		"value": "example0/",
+  		"text": "Tutorial"
+  	},
   	{
   		"value": "example1/",
   		"text": "Example 1"
