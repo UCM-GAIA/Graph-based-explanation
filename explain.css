@@ -73,3 +73,6 @@ html, body {
 .scrollbar-primary {
 	scrollbar-color: #d8e1f0 #F5F5F5; /*Original first color: #4285F4*/
 }
+
+.tooltip > .arrow::before {border-bottom-color: #28a745;}
+.tooltip > .tooltip-inner {background-color: #28a745;}

@@ -125,6 +125,10 @@ function loadExplanationsButtons() {
 		else
 			html += ' btn-outline-secondary"';
 
+		// Añadimos los atributos del tooltip
+		html += ' data-title="Best explanation!" data-palcement="bottom';
+		html += ' data-delay=\'{"show":"3000", "hide":"2000"} data-trigger="manual"\'';
+
 		html += '>Movie ' 
 				+ (i+1) 
 				+ '</button>';
@@ -299,6 +303,18 @@ function removeAttribute(attr) {
 
 			$(rec_botton_id).removeClass("btn-outline-secondary");
 			$(rec_botton_id).addClass("btn-success");
+			
+			$(rec_botton_id).tooltip({
+				title: "Best explanation!",
+				placement: "bottom",
+				delay: { "show": 700, "hide": 700 },
+				trigger: "manual" 
+			});
+
+			$(rec_botton_id).tooltip('show');
+			setTimeout(function(){
+		      $(rec_botton_id).tooltip( 'hide' );
+		    }, 6000);
 		}
 		
 		// Vuelvo a pintar la explicación
