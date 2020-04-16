@@ -162,6 +162,8 @@ function loadExplanationsButtons() {
 			refreshRecommendation();
 
 			addStep("Changed to recommendation " + (num_explanation + 1));
+
+			$(new_button_id).tooltip('hide');
 		});
 
 	}
