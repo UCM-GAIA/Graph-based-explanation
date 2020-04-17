@@ -35,6 +35,11 @@ html, body {
 	right:50px; 
 }
 
+#undo{
+	position:relative;
+	top:5px;
+}
+
 #lateral{
 	top:5px; 
 }

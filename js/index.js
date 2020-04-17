@@ -15,6 +15,7 @@ var currentExample = null;
 var zoomValue = 1;
 var selectedExplanation = null;
 var my_current_example = null;
+var graph_history = new Array();
 
 $(function() {
 	// Incluimos el evento correspondiente a cada uno de los botones.
@@ -23,6 +24,7 @@ $(function() {
 	$("#btn_dislike").click(dislike);
 	$("#btn_zoom_in").click(zoomIn);
 	$("#btn_zoom_out").click(zoomOut);
+	$("#undo").click(unDoExample);	
 
 	// Cargamos todos los ejemplos de la carpeta data
 	//loadSelect();
@@ -65,17 +67,21 @@ function loadExample() {
 	
 	// nos aseguramos de que el sistema este ON
 	enableSystem();
+	
+	// Limpiamos el historial
+	graph_history = new Array();
 
 	// Obtenemos la ruta
 	// let path = "data/" + $("#options").val();
 	
 	if(my_current_example === 0){
 		// Tutorial
-		document.querySelector('#btn_ver').innerText = "Next Step";
+		document.querySelector('#btn_ver').innerText = "Start";
 
 		// Dibujar popups del tutorial
 		drawTutorial();
 	} else if (my_current_example === 1) {
+		document.querySelector('#btn_ver').innerText = "Next Step";
 		finishTutorial(); // desactivamos los pop ups del tutorial
 	} else if (my_current_example === 5){
 		// Finalización del sistema
@@ -114,6 +120,7 @@ function loadExample() {
 		
 		// desactivamos el boton para pasar a la siguiente recomendacion hasta que el usuario le de a like o dislike
 		$("#btn_ver").addClass("disabledbutton");
+		
 		
 	} else{ // al final se carga el formulario
 		window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSfxW0qokIiW-2WCjTzCzK_ePdcjjbW_5IKeA5zGq4EbT_Jrqw/viewform?embedded=true");
@@ -243,6 +250,7 @@ function disableSystem(){
 	$(".evaluateRecommendation").addClass("disabledbutton"); 
 	$("#zoomGraph").addClass("disabledbutton");
 	$("#explanations_buttons").addClass("disabledbutton");
+	$("#undo").addClass("disabledbutton");
 };
 
 // Funcion auxiliar para terminar el ejemplo
@@ -332,7 +340,7 @@ function drawTutorial(){
 	drawPopUpTutorial("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
 	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
 	drawPopUpTutorial("#steps_list", "Here, you can see the steps that you have carried out.", "left", trigger, show);
-	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore!", "left", trigger, show); 
+	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore unless you undo the last action!", "left", trigger, show); 
 };
 
 /*
@@ -394,6 +402,29 @@ function drawPopUpBestExplanation(){
 	}, 3000);
 }
 
+	// source: https://github.com/jashkenas/underscore/blob/master/underscore.js#L1320
+	function isObject(obj) {
+	  var type = typeof obj;
+	  return type === 'function' || type === 'object' && !!obj;
+	};
+	function iterationCopy(src) {
+	  let target = {};
+	  for (let prop in src) {
+		if (src.hasOwnProperty(prop)) {
+		  // if the value is a nested object, recursively copy all it's properties
+		  if (isObject(src[prop])) {
+			target[prop] = iterationCopy(src[prop]);
+		  } else {
+			target[prop] = src[prop];
+		  }
+		}
+	  }
+	  return target;
+	}
+
+
+
+
 /**
  * Función que elimina un atributo de todas las explicaciones
  * que hay cargadas en currentExplanation.
@@ -401,6 +432,19 @@ function drawPopUpBestExplanation(){
  */
 function removeAttribute(attr) {
 	if (currentExample != null) {
+		
+		let current_example_history = new Object();
+		current_example_history['history'] = new Object();
+		Object.assign(current_example_history['history'], currentExample.cloneExample());
+		current_example_history['attribute'] = attr;
+
+		// Guardamos este estado en el historial co su atributo eliminado
+		graph_history.push(current_example_history); 
+		
+		console.log(graph_history);
+		
+		// habilitar boton de deshacer
+		$("#undo").removeClass("disabledbutton");
 		
 		// cambian los colores del boton actual
 		let index_rec = currentExample.bestExplanationIndex;
@@ -424,5 +468,37 @@ function removeAttribute(attr) {
 	} else {
 		console.log("There is no example loaded.");
 	}
-	
 }
+
+
+function unDoExample(){
+	// mirar si el historial no esta vacio
+	if (graph_history.length > 0){
+		// cargar el ultimo ejemplo en la variable global de mi currentExample
+		// hago una copia para que al borrarlo no haya problemas
+		currentExample = graph_history[graph_history.length - 1]['history'].cloneExample(); 
+		
+		console.log(currentExample);
+		
+		// volver a pintar el grafo
+		let currentExplanation = currentExample.getCurrentExplanation();
+		
+		// Get the best explanation to show
+		//paint_graph(currentExplanation.nodes, currentExplanation.links, true);
+		//loadExplanationsButtons();
+		//drawPopUpBestExplanation();
+
+		
+		addStep("Retrieved the attribute " + graph_history[graph_history.length - 1]['attribute']);
+		
+		
+		// barra de peliculas sale correctamente -- verde, azul y gris?
+		
+		// eliminar del historial este estado
+		
+		// si el historial queda vacio, deshabilitar el boton
+		
+	}
+
+}
+

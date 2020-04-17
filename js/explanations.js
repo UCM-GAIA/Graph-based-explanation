@@ -82,8 +82,30 @@ class ExplanationsSet {
 		this.currentExplanationIndex = index;
 	}
 	
+	setBestExplanation(index) {
+		this.bestExplanationIndex = index;
+	}
+	
 	getExplanationByIndex(i){
 		return this.explanations[i];
+	}
+	
+
+	/**
+	 * Función que obtiene una copia del ejemplo
+	 */
+	cloneExample(){
+		let cloned_example = new ExplanationsSet();
+		cloned_example.setCurrentExplanation(this.currentExplanationIndex);
+		cloned_example.setBestExplanation(this.bestExplanationIndex);
+		
+		for (var i = 0; i < this.explanations.length; i++){
+			let my_explanation = this.explanations[i];
+			
+			cloned_example.explanations.push(new Explanation(my_explanation.cloneNodes(), my_explanation.cloneLinks()));
+		}
+		
+		return cloned_example;
 	}
 
 }
@@ -107,6 +129,44 @@ class Explanation {
 			this.links[i].source = this.getNodebyId(this.links[i].source, this.nodes);
 			this.links[i].target = this.getNodebyId(this.links[i].target, this.nodes);
 		}
+	}
+	
+	/**
+	 * Función para clonar los nodos de esta explicación
+	 * @return	conjunto de nodos copiados
+	 */
+	cloneNodes(){
+		let cloned_nodes = new Array();
+		
+		for (var i = 0; i < this.nodes.length; i++){
+			let clonedNode = new Object();
+			Object.assign(clonedNode, this.nodes[i]);
+			
+			cloned_nodes.push(clonedNode);
+		}
+		
+		return cloned_nodes;
+	}
+	
+	/**
+	 * Función para clonar los links de esta explicación
+	 * @return	conjunto de links copiados
+	 */
+	cloneLinks(){
+		let cloned_links = new Array();
+		
+		for (var i = 0; i < this.links.length; i++){
+			let clonedLink = new Object();
+			clonedLink['source'] = new Object();
+			clonedLink['target'] = new Object();
+			
+			Object.assign(clonedLink['source'], this.links[i].source);
+			Object.assign(clonedLink['target'], this.links[i].target);
+			
+			cloned_links.push(clonedLink);
+		}
+		
+		return cloned_links;
 	}
 
 	/**
