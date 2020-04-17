@@ -30,6 +30,7 @@ $(function() {
 	disableSystem();
 	my_current_example = 0;
 	init_svg("#vis");
+	bootbox.alert("Click on the Start button to begin! The first window in the system contains a tutorial. You can see some explanations of the system work if you hover over the buttons with the mouse cursor. When you finished, you will move to the system itself clicking on the Next Step button.");
 });
 
 /**
@@ -71,11 +72,11 @@ function loadExample() {
 	if(my_current_example === 0){
 		// Tutorial
 		document.querySelector('#btn_ver').innerText = "Next Step";
-		bootbox.alert("This is the first window in the system! It contains a tutorial. You can see some explanations of the system work if you hover over the buttons with the mouse cursor. ");
-		
-		
+
 		// Dibujar popups del tutorial
 		drawTutorial();
+	} else if (my_current_example === 1) {
+		finishTutorial(); // desactivamos los pop ups del tutorial
 	} else if (my_current_example === 5){
 		// Finalización del sistema
 		document.querySelector('#btn_ver').innerText = "Finish";
@@ -319,14 +320,6 @@ function cleanSteps() {
 	$("#steps_list").empty();
 }
 
-
-/*
-	COSAS QUE FALTAN POR HACER:
-	- Cambiar el color de los tooltips que no son de mejor explicaciones
-	- Cambiar el color de las flechitas del tooltip
-	- Desactivar los tooltip cuando no se esta en tutorial. 
-*/
-
 /*
 * Función auxiliar para dibujar los pop ups de la 
 */
@@ -334,19 +327,45 @@ function drawTutorial(){
 	let trigger = "hover focus";
 	let show = "hide";
 	
-	drawPopUp("#zoomGraph", "You can zoom in or zoom out the explanation!", "top", trigger, show);
-	drawPopUp("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom", trigger, show);
-	//drawPopUp("#btn_ver", "This button is disabled until you finish the task, when you click on the like or dislike buttons!", "left", trigger, show);
-	drawPopUp("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
-	drawPopUp("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
-	drawPopUp("#steps_list", "Here, you can see the steps that you have carried out.", "left", trigger, show);
-	drawPopUp("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore!", "right", trigger, show); 
+	drawPopUpTutorial("#zoomGraph", "You can zoom in or zoom out the explanation!", "top", trigger, show);
+	drawPopUpTutorial("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom", trigger, show);
+	drawPopUpTutorial("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
+	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
+	drawPopUpTutorial("#steps_list", "Here, you can see the steps that you have carried out.", "left", trigger, show);
+	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore!", "left", trigger, show); 
+};
+
+/*
+* Función auxiliar para dibujar los pop ups del tutorial
+*/
+function drawPopUpTutorial(button_id, msg, place, trigger_type, show){
+	
+	$(button_id).popover({
+		content: msg,
+		placement: place,
+		delay: { "show": 700, "hide": 700 },
+		trigger: trigger_type
+	});
+
+	$(button_id).popover(show);
+};
+
+/*
+* Función auxililiar para eliminar las explicaciones del tutorial
+*/
+function finishTutorial(){
+	$('#zoomGraph').popover('dispose');
+	$('#explanations_buttons').popover('dispose');
+	$('#btn_like').popover('dispose');
+	$('#btn_dislike').popover('dispose');
+	$('#steps_list').popover('dispose');
+	$('#vis').popover('dispose');
 };
 
 /*
 * Función auxiliar para dibujar explicaciones en el tutorial
 */
-function drawPopUp(button_id, msg, place, trigger_type, show){
+function drawToolTip(button_id, msg, place, trigger_type, show){
 	
 	$(button_id).tooltip({
 		title: msg,
@@ -368,7 +387,7 @@ function drawPopUpBestExplanation(){
 	$(rec_botton_id).removeClass("btn-outline-secondary");
 	$(rec_botton_id).addClass("btn-success");
 	
-	drawPopUp(rec_botton_id, "Best explanation!", "bottom", "manual", 'show');
+	drawToolTip(rec_botton_id, "Best explanation!", "bottom", "manual", 'show');
 
 	setTimeout(function(){
 		$(rec_botton_id).tooltip( 'hide' );
