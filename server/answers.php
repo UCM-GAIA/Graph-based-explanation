@@ -30,13 +30,15 @@ function createAnswer() {
  * @param $actions: acciones que ha realizado en el ejemplo, cada
  *                  una de ellas separadas por una coma.
  */
-function saveAnswer($id, $question, $answer) {
+function saveAnswer($id, $question, $result, $num_steps, $answer) {
 	$current_time = time();
 	$file_name = './answers/' . $id . '.log';
 
 	$file = fopen($file_name, 'a');
 	fwrite($file, "Explanation: " . $question . "\n");
 	fwrite($file, "Time: " . $current_time . "\n");
+	fwrite($file, "Result: " . $result. "\n");
+	fwrite($file, "Num. Steps: " . $num_steps. "\n");
 	fwrite($file, "Actions: " . $answer . "\n");
 	fclose($file);
 }

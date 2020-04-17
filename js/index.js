@@ -17,6 +17,8 @@ var selectedExplanation = null;
 var my_current_example = null;
 var graph_history = new Array();
 
+const URL_ENCUESTA = "http://localhost:8000/server/explanations.php";
+
 $(function() {
 	// Incluimos el evento correspondiente a cada uno de los botones.
 	$("#btn_ver").click(loadExample);
@@ -83,12 +85,25 @@ function loadExample() {
 	} else if (my_current_example === 1) {
 		document.querySelector('#btn_ver').innerText = "Next Step";
 		finishTutorial(); // desactivamos los pop ups del tutorial
+
+		// Creamos la encuesta en el server
+		$.ajax({
+			url: URL_ENCUESTA,
+			data: {option: 'new'},
+			type: 'POST',
+			success: function (data) {
+				Cookies.set('id', data['id']);
+				alert(data);
+			}
+		});
+
 	} else if (my_current_example === 5){
 		// Finalización del sistema
 		document.querySelector('#btn_ver').innerText = "Finish";
 	}
 	
 	if(my_current_example <= EXAMPLES_NUM){
+
 	
 		let path = "data/example" + my_current_example + "/";
 		currentExample = new ExplanationsSet();
@@ -124,6 +139,7 @@ function loadExample() {
 		
 	} else{ // al final se carga el formulario
 		window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSfxW0qokIiW-2WCjTzCzK_ePdcjjbW_5IKeA5zGq4EbT_Jrqw/viewform?embedded=true");
+		Cookies.remove('id')
 	}
 		
 }
@@ -287,6 +303,10 @@ function endExample(like){
 function like() {
 	// Añadimos la acción de "Like"
 	endExample(true);
+
+	if (my_current_example > 1) {
+		sendExample('Like');
+	}
 };
 
 /**
@@ -295,6 +315,10 @@ function like() {
 function dislike() {
 	// Añadimos la acción de "Dislike"
 	endExample(false);
+
+	if (my_current_example > 1) {
+		sendExample('Dislike');
+	}
 }
 
 /**
@@ -500,5 +524,29 @@ function unDoExample(){
 		
 	}
 
+}
+
+function sendExample(result) {
+
+	var steps_str = steps[0];
+	for (var i = 0; i < steps.length; i++) {
+		steps_str += "," + steps[i];
+	}
+
+	$.ajax({
+		url: URL_ENCUESTA,
+		data: {
+			option: 'addActions',
+			id: Cookies.get('id'),
+			explanation: (my_current_example - 1),
+			result: result,
+			num_steps: steps.length,
+			actions: steps_str
+		},
+		type: 'POST',
+		success: function (data) {
+			
+		}
+	});
 }
 
