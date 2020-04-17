@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prueba Server</title>
+</head>
+<body>
+
+	<button id="createAnswer">Create Answer</button>
+
+	<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		
+		$(function() {
+			$("#createAnswer").click(addAnswer);
+		});
+
+		function createTest() {
+
+			$.ajax({
+				url: 'http://localhost:8000/server/explanations.php',
+				data: {option: 'new'},
+				type: 'POST',
+				success: function (data) {
+					alert(data);
+				}
+			});
+
+		}
+
+		function addAnswer() {
+			$.ajax({
+				url: 'http://localhost:8000/server/explanations.php',
+				data: {
+					option: 'addActions',
+					id: '1587114950_7',
+					explanation: 1,
+					actions: '1, 2, 3, 4, 5, 6'
+				},
+				type: 'POST',
+				success: function (data) {
+					alert(data);
+				}
+			});
+		}
+
+	</script>
+
+</body>
+
+</html>
