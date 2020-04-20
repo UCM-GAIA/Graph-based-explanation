@@ -131,6 +131,7 @@ class Explanation {
 		}
 	}
 	
+	
 	/**
 	 * Función para clonar los nodos de esta explicación
 	 * @return	conjunto de nodos copiados
@@ -140,6 +141,7 @@ class Explanation {
 		
 		for (var i = 0; i < this.nodes.length; i++){
 			let clonedNode = new Object();
+			
 			Object.assign(clonedNode, this.nodes[i]);
 			
 			cloned_nodes.push(clonedNode);
@@ -155,13 +157,12 @@ class Explanation {
 	cloneLinks(){
 		let cloned_links = new Array();
 		
-		for (var i = 0; i < this.links.length; i++){
-			let clonedLink = new Object();
-			clonedLink['source'] = new Object();
-			clonedLink['target'] = new Object();
 			
-			Object.assign(clonedLink['source'], this.links[i].source);
-			Object.assign(clonedLink['target'], this.links[i].target);
+		for(var i = 0; i < this.links.length; i++){
+			let clonedLink = new Object();
+			
+			clonedLink["source"] = this.links[i].source.id;
+			clonedLink["target"] = this.links[i].target.id;
 			
 			cloned_links.push(clonedLink);
 		}

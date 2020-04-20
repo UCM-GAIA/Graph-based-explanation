@@ -34,7 +34,7 @@ $(function() {
 	disableSystem();
 	my_current_example = 0;
 	init_svg("#vis");
-	bootbox.alert("Click on the Start button to begin! The first window in the system contains a tutorial. You can see some explanations of the system work if you hover over the buttons with the mouse cursor. When you finished, you will move to the system itself clicking on the Next Step button.");
+	bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You can see some explanations of the system work if you hover over the buttons with the mouse cursor. When you finished, you will move to the system itself clicking on the Start button.");
 });
 
 /**
@@ -266,7 +266,8 @@ function disableSystem(){
 	$(".evaluateRecommendation").addClass("disabledbutton"); 
 	$("#zoomGraph").addClass("disabledbutton");
 	$("#explanations_buttons").addClass("disabledbutton");
-	$("#undo").addClass("disabledbutton");
+	//$("#undo").addClass("disabledbutton");
+	$("#undo").hide();
 };
 
 // Funcion auxiliar para terminar el ejemplo
@@ -356,22 +357,22 @@ function cleanSteps() {
 * Función auxiliar para dibujar los pop ups de la 
 */
 function drawTutorial(){
-	let trigger = "hover focus";
-	let show = "hide";
-	
-	drawPopUpTutorial("#zoomGraph", "You can zoom in or zoom out the explanation!", "top", trigger, show);
-	drawPopUpTutorial("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom", trigger, show);
-	drawPopUpTutorial("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
-	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left", trigger, show);
-	drawPopUpTutorial("#steps_list", "Here, you can see the steps that you have carried out.", "left", trigger, show);
-	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore unless you undo the last action!", "left", trigger, show); 
+	drawPopUpTutorial("#zoomGraph", "You can zoom in or zoom out the explanation!", "top");
+	drawPopUpTutorial("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom");
+	drawPopUpTutorial("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left");
+	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left");
+	drawPopUpTutorial("#steps_list", "Here, you can see the steps that you have carried out.", "left");
+	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore unless you undo the last action!", "left"); 
+	drawPopUpTutorial("#undo", "You can restore the last removed attribute with this button. The button will desappear when there are not more attributes to retrieve!", "bottom");
 };
 
 /*
 * Función auxiliar para dibujar los pop ups del tutorial
 */
-function drawPopUpTutorial(button_id, msg, place, trigger_type, show){
-	
+function drawPopUpTutorial(button_id, msg, place){
+	let trigger_type = "hover focus";
+	let show = "hide";
+
 	$(button_id).popover({
 		content: msg,
 		placement: place,
@@ -392,62 +393,46 @@ function finishTutorial(){
 	$('#btn_dislike').popover('dispose');
 	$('#steps_list').popover('dispose');
 	$('#vis').popover('dispose');
-};
-
-/*
-* Función auxiliar para dibujar explicaciones en el tutorial
-*/
-function drawToolTip(button_id, msg, place, trigger_type, show){
-	
-	$(button_id).tooltip({
-		title: msg,
-		placement: place,
-		delay: { "show": 700, "hide": 700 },
-		trigger: trigger_type
-	});
-
-	$(button_id).tooltip(show);
+	$('#undo').popover('dispose');
 };
 
 /*
 * Función auxiliar para ver el tooltip de mejor explicación
 */
 function drawPopUpBestExplanation(){
+	
 	let index_rec = currentExample.bestExplanationIndex;
 	let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
 
 	$(rec_botton_id).removeClass("btn-outline-secondary");
 	$(rec_botton_id).addClass("btn-success");
 	
-	drawToolTip(rec_botton_id, "Best explanation!", "bottom", "manual", 'show');
+	//drawToolTip(rec_botton_id, "Best explanation!", "bottom", "manual", 'show');
 
+	$(rec_botton_id).tooltip({
+		title: "Best explanation!",
+		placement: "bottom",
+		delay: { "show": 700, "hide": 700 },
+		trigger: "manual"
+	});
+
+	$(rec_botton_id).tooltip("show");
+	
 	setTimeout(function(){
 		$(rec_botton_id).tooltip( 'hide' );
 	}, 3000);
-}
+};
 
-	// source: https://github.com/jashkenas/underscore/blob/master/underscore.js#L1320
-	function isObject(obj) {
-	  var type = typeof obj;
-	  return type === 'function' || type === 'object' && !!obj;
-	};
-	function iterationCopy(src) {
-	  let target = {};
-	  for (let prop in src) {
-		if (src.hasOwnProperty(prop)) {
-		  // if the value is a nested object, recursively copy all it's properties
-		  if (isObject(src[prop])) {
-			target[prop] = iterationCopy(src[prop]);
-		  } else {
-			target[prop] = src[prop];
-		  }
-		}
-	  }
-	  return target;
+/*
+* Función auxiliar para eliminar los pop ups de mejor recomendacion en el caso de que aun esten en pantalla
+*/
+function removeBestExplanationPopUp(){
+	// borrar el anterior en caso de que este dibujado, me aseguro eliminando todos los pop ups que existen de mejor recomendacion
+	for (var i = 1; i <= currentExample.explanations.length; i++){
+		let botton_id = "#btn_explanation_" + i;
+		$(botton_id).tooltip( 'hide' );
 	}
-
-
-
+};
 
 /**
  * Función que elimina un atributo de todas las explicaciones
@@ -456,16 +441,19 @@ function drawPopUpBestExplanation(){
  */
 function removeAttribute(attr) {
 	if (currentExample != null) {
+		// elimino el anterior pop up de mejor explicacion que existe hasta ahora
+		removeBestExplanationPopUp();
 		
 		let current_example_history = new Object();
-		current_example_history['history'] = new Object();
-		Object.assign(current_example_history['history'], currentExample.cloneExample());
+		current_example_history['history'] = currentExample.cloneExample();
 		current_example_history['attribute'] = attr;
 
-		// Guardamos este estado en el historial co su atributo eliminado
+		// Guardamos este estado en el historial con su atributo eliminado 
 		graph_history.push(current_example_history); 
 		
-		console.log(graph_history);
+		$("#undo").show();
+		document.querySelector('#undo_text').innerText = " " + attr;
+		
 		
 		// habilitar boton de deshacer
 		$("#undo").removeClass("disabledbutton");
@@ -494,33 +482,49 @@ function removeAttribute(attr) {
 	}
 }
 
-
+/**
+ * Función que devuelve al estado anterior el sistema
+ */
 function unDoExample(){
 	// mirar si el historial no esta vacio
 	if (graph_history.length > 0){
-		// cargar el ultimo ejemplo en la variable global de mi currentExample
-		// hago una copia para que al borrarlo no haya problemas
-		currentExample = graph_history[graph_history.length - 1]['history'].cloneExample(); 
-		
-		console.log(currentExample);
-		
-		// volver a pintar el grafo
-		let currentExplanation = currentExample.getCurrentExplanation();
-		
-		// Get the best explanation to show
-		//paint_graph(currentExplanation.nodes, currentExplanation.links, true);
-		//loadExplanationsButtons();
-		//drawPopUpBestExplanation();
-
-		
-		addStep("Retrieved the attribute " + graph_history[graph_history.length - 1]['attribute']);
-		
-		
-		// barra de peliculas sale correctamente -- verde, azul y gris?
+		// elimino el anterior pop up de mejor explicacion que existe hasta ahora
+		removeBestExplanationPopUp();
 		
 		// eliminar del historial este estado
+		let last_state = graph_history.pop();
 		
-		// si el historial queda vacio, deshabilitar el boton
+		// cargar el ultimo ejemplo en la variable global de mi currentExample
+		// hago una copia para que al borrarlo no haya problemas
+		let my_history = last_state['history'];
+		let currentAttribute = last_state['attribute'];
+		
+		// vuelvo al estado anterior
+		currentExample = my_history.cloneExample(); 
+		
+		// me quedo en el grafo en el que estoy actualmente
+		currentExample.setCurrentExplanation(selectedExplanation);
+		
+		// pinto el grafo
+		refreshRecommendation();
+		
+		// cargo la barra de botones apra cambiar de peli
+		loadExplanationsButtons();
+		
+		// genero el popup de mejor explicacion
+		drawPopUpBestExplanation();
+		
+		addStep("Retrieved the attribute " + currentAttribute);	
+		
+		
+		// si el historial queda vacio, deshabilitar el boton, si no, cambiar el nombre al anterior atributo
+		if (graph_history.length === 0){
+			$("#undo").addClass("disabledbutton");
+			$("#undo").hide(); 
+		} else {
+			let lastAttribute = graph_history[graph_history.length-1]['attribute'];
+			document.querySelector('#undo_text').innerText = " " + lastAttribute;
+		}
 		
 	}
 

@@ -31,13 +31,14 @@ html, body {
 
 #zoomGraph{
 	position:absolute;
-	top:5px;
-	right:50px; 
+	top:13px;
+	right:100px; 
 }
 
 #undo{
 	position:relative;
-	top:5px;
+	top:25px;
+	margin-left:0px;
 }
 
 #lateral{
