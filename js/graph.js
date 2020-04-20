@@ -313,21 +313,20 @@ function mousedownNode(d, idx) {
 				my_checkboxes.push(myObject);
 			};
 			
-			// to customize the prompt
-			var locale = {
-				OK: 'Delete',
-				CONFIRM: 'Delete',
-				CANCEL: 'Cancel'
-			};
-						
-			bootbox.addLocale('custom', locale);
-			
 			
 			// show the prompt to the user
 			bootbox.prompt({
 				title: "Click the checkbox of the attributes that you want to delete!",
-				locale: 'custom',
-				//value: attrOriginal,
+				buttons: {
+					'cancel': {
+						label: 'Cancel',
+						className: 'btn-default pull-left'
+					},
+					'confirm': {
+						label: 'Delete',
+						className: 'btn-danger'
+					}
+				},
 				inputType: 'checkbox',
 				inputOptions: my_checkboxes,
 				callback: function (result) {
