@@ -10,12 +10,12 @@
  */
 const SVG_WIDTH = screen.availWidth; //1500
 const SVG_HEIGTH = screen.availHeight; //652
-const LINK_COLOR = "#B0E0E6";//"#B0E0E6";
-const SUPERNODE_COLOR = "#FFCBA3";//"#FFDAB9";
-const SUPERNODE_SIZE = 360; //300
-const INTERNAL_NODE_COLOR = "#BCA8E6";
+const LINK_COLOR = "#B0E0E6";
+const SUPERNODE_COLOR = "#FFDFD3";//"#FFCBA3";
+const SUPERNODE_SIZE = 360; 
+const INTERNAL_NODE_COLOR = "#E0BBE4";//"#BCA8E6";
 const INTERNAL_NODE_SIZE = 200;
-const LABEL_COLOR = "#782664";//"#782664"; 
+const LABEL_COLOR = "#782664"; 
 const IMG_SIZE = 100;
 
 /**
@@ -229,7 +229,7 @@ function paint_supernode(groups, groupIds, nodes, size, color) {
 					  .append('path')
 					  .attr("stroke", color) // SUPERNODE_COLOR
 					  .attr("fill", color)
-					  .style("opacity", 0.5)
+					  //.style("opacity", 0.5)
 					  .style("stroke-width", size) //300
 					  .style("stroke-linecap", "round")
 					  .style("stroke-linejoin", "round");	
@@ -277,6 +277,9 @@ function configure_node(nodes, force) {
 	let node = svg.selectAll("g.node")
 				.data(nodes, function(d) { return d.id; })
 				.enter().append("g")
+				.attr("class", function(d) { 
+					return "node_" + d.id; 
+				})
 				.attr("id", function(d) { 
 					if (d.type != "explanatory_item")
 						return "group_" + "supernode"; 
@@ -348,6 +351,10 @@ function mousedownNode(d, idx) {
 	}
 }
 
+function getBBox(selection) {
+    selection.each(function(d){d.bbox = this.getBBox();})
+}
+
 /**
  * Función que dibuja el texto de los nodos 
  * @param  node		nodos dentro del svg
@@ -362,7 +369,7 @@ function drawText(node, num_nodes){
 			else
 				return IMG_SIZE - 15;
         })
-        .attr("dy", 10)
+        .attr("dy", 8)
         .style("font-size", "18px")
         .style("font-family", "Trebuchet MS")
 		.style("visibility", function (d) {
@@ -371,7 +378,35 @@ function drawText(node, num_nodes){
         })
         .text(function (d) {
 			return d.name
-        });
+        }).call(getBBox);
+		
+	// to insert a background to the text 
+	node.insert("rect","text")
+			.attr("id", function(d) { return "rect" + d.id.toString(10); })
+			.attr("x", function (d) {
+				if (d.type == "attribute")
+					return -18;
+				else
+					return IMG_SIZE - 15;
+			})
+			.attr("y", -8)
+			.attr("width", function(d){return d.bbox.width})
+			.attr("height", function(d){return d.bbox.height})
+			.style("fill", function (d) {
+				if (d.type === "attribute")
+					return LINK_COLOR;
+				else if (d.type === "explanatory_item")
+					return SUPERNODE_COLOR;
+				else
+					return INTERNAL_NODE_COLOR;
+			})
+			.style("visibility", function (d) {
+				if (d.type === "attribute")
+					return "visible";
+				else
+					return "hidden";
+			});
+	
 	
 	// LABELS
 	
@@ -389,9 +424,7 @@ function drawText(node, num_nodes){
         	if (d.type != "movie_recommended")
 				return "hidden";
         })
-        .text(function (d) {
-			return "I recommend you...";
-        });
+        .text("I recommend you...");
 		
 	// to add the label for "because"
 	node.append("text")
@@ -409,9 +442,7 @@ function drawText(node, num_nodes){
         	if (d.type != "movie_recommended" || (d.type === "movie_recommended" && num_nodes === 0))
 				return "hidden";
         })
-        .text(function (d) {
-			return "because";
-        });
+        .text("because");
 		
 	// to add the label for "you watched"
 	node.append("text")
@@ -429,9 +460,7 @@ function drawText(node, num_nodes){
         	if (d.type != "movie_recommended" || (d.type === "movie_recommended" && num_nodes === 0))
 				return "hidden";
         })
-        .text(function (d) {
-			return "you watched...";
-        });
+        .text("you watched...");
 };
 
 /**
@@ -459,6 +488,7 @@ function drawImages(node, num_nodes){
 				.attr("height", IMG_SIZE*2) 
 				.attr("width", IMG_SIZE*2);
 			mouseEventsVisibility(n, "visible");
+			
 		})
 		// set back
 		.on( 'mouseleave', function(n) {
@@ -510,6 +540,9 @@ function drawImages(node, num_nodes){
 function mouseEventsVisibility(my_node, state){
 	let my_item = my_node;
 	let my_id = ".text" + my_item.id.toString(10);
+	let my_rect = "#rect" + my_item.id.toString(10);
+	
+	// change the text to visible and the position of the label
 	d3.select(my_id)
 		.style("visibility", function () {
 			if (my_item.type === "movie_recommended"){
@@ -517,13 +550,19 @@ function mouseEventsVisibility(my_node, state){
 				let my_size = IMG_SIZE - 15;
 				if(state === "visible")
 					my_size = IMG_SIZE + 20;
-				
-				
+
 				d3.select("#label_recommendation").attr("dy", my_size);
 			}
 			if (my_item.type != "attribute")
 				return state;
 		});
+		
+	// make visible the rectangle to make easier the visualisation
+	d3.select(my_rect).style("visibility", function () {
+		if (my_item.type != "attribute"){
+			return state;
+		}	
+	});
 };
 
 // funcion auxiliar para encontrar las coordenadas del elemento recomendado, que va a ser nuestro centroide
