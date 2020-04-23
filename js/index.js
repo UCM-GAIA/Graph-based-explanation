@@ -86,6 +86,9 @@ function loadExample() {
 		document.querySelector('#btn_ver').innerText = "Next Step";
 		finishTutorial(); // desactivamos los pop ups del tutorial
 
+		// mandamos un mensaje al usuario sobre el numero de interacciones
+		bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
+		
 		// Creamos la encuesta en el server
 		$.ajax({
 			url: URL_ENCUESTA,
@@ -114,6 +117,8 @@ function loadExample() {
 			
 			currentExample.addExplanation(explanation);
 		}
+		
+		currentExample.getSortedExample();
 		
 		// comprobamos si la explicacion actual es la mejor a mostrar
 		currentExample.checkExplanations();
@@ -270,19 +275,61 @@ function disableSystem(){
 	$("#undo").hide();
 };
 
+/*
+	Función auxiliar para crear el prompt con el mini cuestionario del final	
+*/
+function finalQuestionnaire(msg){
+	
+	bootbox.prompt({
+		title: msg,
+		message: '<p>Please select at least one option below:</p>',
+		inputType: 'checkbox',
+		inputOptions: [{
+			text: 'The attributes',
+			value: '1',
+		},
+		{
+			text: 'The explanation examples',
+			value: '2',
+		},
+		{
+			text: 'The grouping of the examples',
+			value: '3',
+		},
+		{
+			text: 'Other: </br><textarea name="textarea" rows="5" cols="50">Write something here...</textarea>',
+			value: '4',
+			type: 'text'
+		}
+		],
+		callback: function (result) {
+			if (result === null || result.length === 0){
+				// si no ha respondido nada, volver a mostrar el mensaje
+				finalQuestionnaire(msg + " You have to click at least one option!");
+			}
+			
+			// result tiene un array con los value que el usuario ha marcado
+			// console.log(result);
+		}
+	});
+};
+
+
 // Funcion auxiliar para terminar el ejemplo
 function endExample(like){
 	let numSteps = steps.length - 1; // -1 para que no cuente load Example
 	let msg;
-	if (like)
-		msg = "You liked the recommendation! You have interacted " + numSteps +  " times with the system.";
-	else
-		msg = "You didn't like the recommendation! You have interacted " + numSteps +  " times with the system.";
+	let promptMsg;
+	if (like){
+		msg = "You consider the explanation useful! You have interacted " + numSteps +  " times with the system. ";
+		promptMsg = msg + "What features do you consider useful?";
+	}
+	else{
+		msg = "You don't consider the explanation useful! You have interacted " + numSteps +  " times with the system. ";
+		promptMsg = msg + "What features do you not consider useful?";
+	}
 
-	bootbox.alert({
-		message: msg,
-		size: "small"
-	});
+	finalQuestionnaire(promptMsg);
 
 	addStep(msg);
 	disableSystem();
@@ -359,8 +406,8 @@ function cleanSteps() {
 function drawTutorial(){
 	drawPopUpTutorial("#zoomGraph", "You can zoom in or zoom out the explanation!", "top");
 	drawPopUpTutorial("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom");
-	drawPopUpTutorial("#btn_like", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left");
-	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in the like button or dislike button. Then you can begin follow the next step.", "left");
+	drawPopUpTutorial("#btn_like", "When you end up, you have to click in this button if you consider the explanation useful. Then you can start using the system!", "left");
+	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in this button if you consider the explanation not useful. Then you can start using the system!", "left");
 	drawPopUpTutorial("#steps_list", "Here, you can see the steps that you have carried out.", "left");
 	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore unless you undo the last action!", "left"); 
 	drawPopUpTutorial("#undo", "You can restore the last removed attribute with this button. The button will desappear when there are not more attributes to retrieve!", "bottom");
@@ -452,7 +499,7 @@ function removeAttribute(attr) {
 		graph_history.push(current_example_history); 
 		
 		$("#undo").show();
-		document.querySelector('#undo_text').innerText = " " + attr;
+		document.querySelector('#undo_text').innerText = "Undo deletion of " + attr;
 		
 		
 		// habilitar boton de deshacer
@@ -523,7 +570,7 @@ function unDoExample(){
 			$("#undo").hide(); 
 		} else {
 			let lastAttribute = graph_history[graph_history.length-1]['attribute'];
-			document.querySelector('#undo_text').innerText = " " + lastAttribute;
+			document.querySelector('#undo_text').innerText = "Undo deletion of " + lastAttribute;
 		}
 		
 	}

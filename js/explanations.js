@@ -33,6 +33,24 @@ class ExplanationsSet {
 	getCurrentExplanation() {
 		return this.explanations[this.currentExplanationIndex];
 	}
+	
+	/**
+	 * Método que ordena las explicaciones del ejemplo por el número de atributos que tiene la explciación
+	 * de más explicable a menos explicable
+	 * @return 
+	 */
+	getSortedExample() {
+		this.explanations.sort(function (a, b) {
+			if (a.getNumNodesAttribute() > b.getNumNodesAttribute()) {
+				return -1;
+			}
+			if (a.getNumNodesAttribute() < b.getNumNodesAttribute()) {
+				return 1;
+			}
+			// equals
+			return 0;
+		});
+	}
 
 	/**
 	 * Función que analiza todas las explicaciones para saber cual es
