@@ -337,7 +337,7 @@ function mousedownNode(d, idx) {
 					if (result != null && result.length != 0){ 
 						for(var i = 0; i < result.length; i++){
 							removeAttribute(result[i]);
-							addStep("Removed the attribute " + result[i]);
+							addStep("Eliminado el atributo " + result[i]);
 						}
 					} 
 				}
@@ -345,7 +345,7 @@ function mousedownNode(d, idx) {
 			
 		} else { // hay un unico atributo en el nodo
 			removeAttribute(d.name);
-			addStep("Removed the attribute " + d.name);
+			addStep("Eliminado el atributo " + d.name);
 		}
 		
 	}
@@ -424,7 +424,7 @@ function drawText(node, num_nodes){
         	if (d.type != "movie_recommended")
 				return "hidden";
         })
-        .text("I recommend you...");
+        .text("Te recomendamos...");
 		
 	// to add the label for "because"
 	node.append("text")
@@ -442,7 +442,7 @@ function drawText(node, num_nodes){
         	if (d.type != "movie_recommended" || (d.type === "movie_recommended" && num_nodes === 0))
 				return "hidden";
         })
-        .text("because");
+        .text("porque");
 		
 	// to add the label for "you watched"
 	node.append("text")
@@ -460,7 +460,7 @@ function drawText(node, num_nodes){
         	if (d.type != "movie_recommended" || (d.type === "movie_recommended" && num_nodes === 0))
 				return "hidden";
         })
-        .text("you watched...");
+        .text("has visto...");
 };
 
 /**

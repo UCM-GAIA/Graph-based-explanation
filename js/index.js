@@ -36,7 +36,8 @@ $(function() {
 	disableSystem();
 	my_current_example = 0;
 	init_svg("#vis");
-	bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You have to follow the steps that the system points out. When you finished, you will move to the system itself clicking on the Start button.");
+	bootbox.alert("¡Haz click en el botón Tutorial para empezar! La primera pantalla contiene un tutorial, tienes que seguir los pasos que el sistema indica. Cuando acabes, pasarás a interactuar con el sistema en sí al hacer click en el botón Empezar.");
+	//bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You have to follow the steps that the system points out. When you finished, you will move to the system itself clicking on the Start button.");
 });
 
 /**
@@ -80,7 +81,7 @@ function loadExample() {
 	
 	if(my_current_example === 0){
 		// Tutorial
-		document.querySelector('#btn_ver').innerText = "Start";
+		document.querySelector('#btn_ver').innerText = "Empezar";
 		
 		if (tutorial_step === 1){
 			showTutorial(tutorial_step);
@@ -91,7 +92,7 @@ function loadExample() {
 		// Dibujar popups del tutorial
 		//drawTutorial();
 	} else if (my_current_example === 1) {
-		document.querySelector('#btn_ver').innerText = "Next Step";
+		document.querySelector('#btn_ver').innerText = "Siguiente paso";
 		//finishTutorial(); // desactivamos los pop ups del tutorial
 
 		// mandamos un mensaje al usuario sobre el numero de interacciones
@@ -110,7 +111,7 @@ function loadExample() {
 
 	} else if (my_current_example === 5){
 		// Finalización del sistema
-		document.querySelector('#btn_ver').innerText = "Finish";
+		document.querySelector('#btn_ver').innerText = "Terminar";
 	}
 	
 	if(my_current_example <= EXAMPLES_NUM){
@@ -144,7 +145,7 @@ function loadExample() {
 		drawPopUpBestExplanation();
 
 		//addStep("Loaded " + $("#options option:selected").text());
-		addStep("Loaded Example " + my_current_example);
+		addStep("Cargado ejemplo " + my_current_example);
 		
 		// desactivamos el boton para pasar a la siguiente recomendacion hasta que el usuario le de a like o dislike
 		$("#btn_ver").addClass("disabledbutton");
@@ -164,7 +165,8 @@ function showTutorial(step){
 	let msg;
 	
 	if (step === 1){
-		msg = "First, you are watching the first recommendation of the system which is also the most explainable. In the upper navigation bar you can see 4 more recommendations for you, with its explanations, sorted by its explainability. See that this current movie recommendation has the attributes Thriller and Drama. Next, click on the second movie recommendation. "
+		//msg = "First, you are watching the first recommendation of the system which is also the most explainable. In the upper navigation bar you can see 4 more recommendations for you, with its explanations, sorted by its explainability. See that this current movie recommendation has the attributes Thriller and Drama. Next, click on the second movie recommendation. "
+		msg = "Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar. En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. Fíjate en que la actual película recomendada tiene los atributos Thriller y Drama. Después, haz click en la segunda película recomendada.";
 	} else if (step === 2){
 		//msg = "You are watching the second recommendation of the system which is the second most explainable. See this movie has the attributes Thriller and Drama. Remove these attributes because you consider them not important. When you finish, go to see the first recommendation again."
 		msg = "Estás viendo la segunda recomendación del sistema, que es la segunda más explicable. Fíjate en que esta recomendación también tiene los atributos Thriller y Drama. Supongamos que esos atributos no los consideras importantes, así que elimínalos. Cuando acabes, vuelve a la primera recomendación."
@@ -185,7 +187,7 @@ function showTutorial(step){
 	}
 	
 	bootbox.dialog({
-		title: "<span style='color: Blue;'>Tutorial Step " + step + "</span>",
+		title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
 		message: msg
 	})
 }
@@ -255,7 +257,7 @@ function loadExplanationsButtons() {
 	for (var i = 0; i < numButtons; i++) {
 		id = 'btn_explanation_' + (i + 1);
 		if (i == 0)
-			html = 'The recommendations are...</br>';
+			html = 'Las recomendaciones son...</br>';
 		else
 			html = '';
 		
@@ -271,7 +273,7 @@ function loadExplanationsButtons() {
 		html += ' src="' + currentExample.getExplanationByIndex(i).getPosterMovieRec() + ');"';
 		
 		// Añadimos los atributos del tooltip
-		html += ' data-title="Best explanation!" data-placement="bottom"';
+		html += ' data-title="¡Mejor explicación!" data-placement="bottom"';
 		html += ' data-delay=\'{"show":"3000", "hide":"2000"} data-trigger="manual"\'';
 				
 		html += '></button>';
@@ -309,7 +311,7 @@ function loadExplanationsButtons() {
 
 			refreshRecommendation();
 
-			addStep("Changed to recommendation " + (num_explanation + 1));
+			addStep("Cambio a recomendación " + (num_explanation + 1));
 
 			$(new_button_id).tooltip('hide');
 			
@@ -381,22 +383,22 @@ function finalQuestionnaire(msg){
 	
 	bootbox.prompt({
 		title: msg,
-		message: '<p>Please select at least one option below:</p>',
+		message: '<p>Por favor, selecciona al menos una opción:</p>',
 		inputType: 'checkbox',
 		inputOptions: [{
-			text: 'The attributes',
+			text: 'Los atributos',
 			value: '1',
 		},
 		{
-			text: 'The explanation examples',
+			text: 'Los ejemplos de la explicación',
 			value: '2',
 		},
 		{
-			text: 'The grouping of the examples',
+			text: 'El agrupamiento de los ejemplos',
 			value: '3',
 		},
 		{
-			text: 'Other: </br><textarea name="textarea" rows="5" cols="50">Write something here...</textarea>',
+			text: 'Otro: </br><textarea name="textarea" rows="5" cols="50">Escribe aquí...</textarea>',
 			value: '4',
 			type: 'text'
 		}
@@ -404,7 +406,7 @@ function finalQuestionnaire(msg){
 		callback: function (result) {
 			if (result === null || result.length === 0){
 				// si no ha respondido nada, volver a mostrar el mensaje
-				finalQuestionnaire(msg + " You have to click at least one option!");
+				finalQuestionnaire(msg + " ¡Tienes que seleccionar al menos una opción!");
 			}
 			
 			// result tiene un array con los value que el usuario ha marcado
@@ -420,12 +422,12 @@ function endExample(like){
 	let msg;
 	let promptMsg;
 	if (like){
-		msg = "You consider the explanation useful! You have interacted " + numSteps +  " times with the system. ";
-		promptMsg = msg + "What features do you consider useful?";
+		msg = "¡Consideras la explicación útil! Has interactuado " + numSteps +  " veces con el sistema. ";
+		promptMsg = msg + "¿Qué características del sistema consideras útiles?";
 	}
 	else{
-		msg = "You don't consider the explanation useful! You have interacted " + numSteps +  " times with the system. ";
-		promptMsg = msg + "What features do you not consider useful?";
+		msg = "No consideras la explicación útil. Has interactuado " + numSteps +  " veces con el sistema. ";
+		promptMsg = msg + "¿Qué características del sistema no consideras útiles?";
 	}
 
 	finalQuestionnaire(promptMsg);
@@ -500,36 +502,6 @@ function cleanSteps() {
 }
 
 /*
-* Función auxiliar para dibujar los pop ups de la 
-*/
-/*function drawTutorial(){
-	drawPopUpTutorial("#zoomGraph", "You can zoom in or zoom out the explanation!", "top");
-	drawPopUpTutorial("#explanations_buttons", "These are your recommendations! You can change whenever you want. The green one is the best explanation. The blue one is the selected one. The rest of them are in grey.", "bottom");
-	drawPopUpTutorial("#btn_like", "When you end up, you have to click in this button if you consider the explanation useful. Then you can start using the system!", "left");
-	drawPopUpTutorial("#btn_dislike", "When you end up, you have to click in this button if you consider the explanation not useful. Then you can start using the system!", "left");
-	drawPopUpTutorial("#steps_list", "Here, you can see the steps that you have carried out.", "left");
-	drawPopUpTutorial("#vis", "Here, you can see the recommended movie in the center and its explanation. You can delete an attribute when you click its X. This attribute will not appear anymore unless you undo the last action!", "left"); 
-	drawPopUpTutorial("#undo", "You can restore the last removed attribute with this button. The button will desappear when there are not more attributes to retrieve!", "bottom");
-};*/
-
-/*
-* Función auxiliar para dibujar los pop ups del tutorial
-*/
-/*function drawPopUpTutorial(button_id, msg, place){
-	let trigger_type = "hover focus";
-	let show = "hide";
-
-	$(button_id).popover({
-		content: msg,
-		placement: place,
-		delay: { "show": 700, "hide": 700 },
-		trigger: trigger_type
-	});
-
-	$(button_id).popover(show);
-};*/
-
-/*
 * Función auxililiar para eliminar las explicaciones del tutorial
 */
 function finishTutorial(){
@@ -556,7 +528,7 @@ function drawPopUpBestExplanation(){
 	//drawToolTip(rec_botton_id, "Best explanation!", "bottom", "manual", 'show');
 
 	$(rec_botton_id).tooltip({
-		title: "Best explanation!",
+		title: "¡Mejor explicación!",
 		placement: "bottom",
 		delay: { "show": 700, "hide": 700 },
 		trigger: "manual"
@@ -598,7 +570,7 @@ function removeAttribute(attr) {
 		graph_history.push(current_example_history); 
 		
 		$("#undo").show();
-		document.querySelector('#undo_text').innerText = "Undo deletion of " + attr;
+		document.querySelector('#undo_text').innerText = "Deshacer la eliminación de " + attr;
 		
 		
 		// habilitar boton de deshacer
@@ -633,13 +605,13 @@ function removeAttribute(attr) {
 		}
 		// step 4
 		if (tutorial_step === 4 && my_current_example === 0){
-			if (attr === "Crime" || attr === "Mystery" || attr === "Short duration"){
+			if (attr === "Crimen" || attr === "Misterio" || attr === "Corta duración"){
 				tutorial_changes++;
 			}
 		}
 		// step 5
 		if (tutorial_step === 5 && my_current_example === 0){
-			if (attr === "Long duration"){
+			if (attr === "Larga duración"){
 				tutorial_changes++;
 			}
 		}
@@ -682,18 +654,18 @@ function unDoExample(){
 		// genero el popup de mejor explicacion
 		drawPopUpBestExplanation();
 		
-		addStep("Retrieved the attribute " + currentAttribute);	
+		addStep("Recuperado el atributo " + currentAttribute);	
 		
 		// Tutorial step 6
 		if (tutorial_step === 6 && my_current_example === 0){
-			if (currentAttribute === "Long duration"){
+			if (currentAttribute === "Larga duración"){
 				tutorial_changes--;
 			}
 		}
 		
 		// Tutorial step 7
 		if (tutorial_step === 7 && my_current_example === 0){
-			if (currentAttribute === "Crime" || currentAttribute === "Mystery" || currentAttribute === "Short duration" || currentAttribute === "Drama" || currentAttribute === "Thriller"){
+			if (currentAttribute === "Crimen" || currentAttribute === "Misterio" || currentAttribute === "Corta duración" || currentAttribute === "Drama" || currentAttribute === "Thriller"){
 				tutorial_changes--;
 			}
 		}
@@ -704,7 +676,7 @@ function unDoExample(){
 			$("#undo").hide(); 
 		} else {
 			let lastAttribute = graph_history[graph_history.length-1]['attribute'];
-			document.querySelector('#undo_text').innerText = "Undo deletion of " + lastAttribute;
+			document.querySelector('#undo_text').innerText = "Deshacer la eliminación de " + lastAttribute;
 		}
 		
 	}
