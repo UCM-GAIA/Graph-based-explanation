@@ -95,8 +95,12 @@ function loadExample() {
 		document.querySelector('#btn_ver').innerText = "Siguiente paso";
 		//finishTutorial(); // desactivamos los pop ups del tutorial
 
+		bootbox.prompt("Escribe tu nombre y apellidos:", function(result){ 
+			bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
+		});
+		
 		// mandamos un mensaje al usuario sobre el numero de interacciones
-		bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
+		//bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
 		
 		// Creamos la encuesta en el server
 		$.ajax({
