@@ -311,7 +311,7 @@ function loadExplanationsButtons() {
 
 			refreshRecommendation();
 
-			addStep("Cambio a recomendación " + (num_explanation + 1));
+			addStep("Cambio a la recomendación " + (num_explanation + 1));
 
 			$(new_button_id).tooltip('hide');
 			
@@ -379,7 +379,7 @@ function disableSystem(){
 /*
 	Función auxiliar para crear el prompt con el mini cuestionario del final	
 */
-function finalQuestionnaire(msg){
+function finalQuestionnaire(msg, msgStep){
 	
 	bootbox.prompt({
 		title: msg,
@@ -404,13 +404,30 @@ function finalQuestionnaire(msg){
 		}
 		],
 		callback: function (result) {
-			if (result === null || result.length === 0){
+			if(result === null){
+				console.log("cancel");
+			}
+			else if (result.length === 0){
 				// si no ha respondido nada, volver a mostrar el mensaje
-				finalQuestionnaire(msg + " ¡Tienes que seleccionar al menos una opción!");
+				finalQuestionnaire(msg, msgStep);
+			} else {
+				addStep(msgStep);
+				disableSystem();
+				my_current_example++; // si el ejemplo es 6 -> pasar al formulario
+				
+				
+				//quitamos el tooltip en caso de que este viendose
+				let index_rec = currentExample.bestExplanationIndex;
+				let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
+				$(rec_botton_id).tooltip( 'hide' );
+				
+				// activamos el boton para pasar al siguiente ejemplo
+				$("#btn_ver").removeClass("disabledbutton");
 			}
 			
 			// result tiene un array con los value que el usuario ha marcado
 			// console.log(result);
+			// ..........................
 		}
 	});
 };
@@ -430,20 +447,7 @@ function endExample(like){
 		promptMsg = msg + "¿Qué características del sistema no consideras útiles?";
 	}
 
-	finalQuestionnaire(promptMsg);
-
-	addStep(msg);
-	disableSystem();
-	my_current_example++; // si el ejemplo es 6 -> pasar al formulario
-	
-	
-	//quitamos el tooltip en caso de que este viendose
-	let index_rec = currentExample.bestExplanationIndex;
-	let rec_botton_id = "#btn_explanation_" + (index_rec + 1);
-	$(rec_botton_id).tooltip( 'hide' );
-	
-	// activamos el boton para pasar al siguiente ejemplo
-	$("#btn_ver").removeClass("disabledbutton");
+	finalQuestionnaire(promptMsg, msg);
 };
 
 /**
