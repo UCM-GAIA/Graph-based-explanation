@@ -319,14 +319,14 @@ function mousedownNode(d, idx) {
 			
 			// show the prompt to the user
 			bootbox.prompt({
-				title: "Click the checkbox of the attributes that you want to delete!",
+				title: "Haz click en los atributos que quieres eliminar:",
 				buttons: {
 					'cancel': {
-						label: 'Cancel',
+						label: 'Cancelar',
 						className: 'btn-default pull-left'
 					},
 					'confirm': {
-						label: 'Delete',
+						label: 'Eliminar',
 						className: 'btn-danger'
 					}
 				},

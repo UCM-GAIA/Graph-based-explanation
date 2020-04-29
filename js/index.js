@@ -159,24 +159,24 @@ function showTutorial(step){
 	
 	if (step === 1){
 		//msg = "First, you are watching the first recommendation of the system which is also the most explainable. In the upper navigation bar you can see 4 more recommendations for you, with its explanations, sorted by its explainability. See that this current movie recommendation has the attributes Thriller and Drama. Next, click on the second movie recommendation. "
-		msg = "Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar. En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. Fíjate en que la actual película recomendada tiene los atributos Thriller y Drama. Después, haz click en la segunda película recomendada.";
+		msg = "<p>Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar. En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables.</p> <p>Fíjate en que la actual película recomendada tiene los atributos <b>Thriller</b> y <b>Drama</b>. Después, haz click en la segunda película recomendada.</p>";
 	} else if (step === 2){
 		//msg = "You are watching the second recommendation of the system which is the second most explainable. See this movie has the attributes Thriller and Drama. Remove these attributes because you consider them not important. When you finish, go to see the first recommendation again."
-		msg = "Estás viendo la segunda recomendación del sistema, que es la segunda más explicable. Fíjate en que esta recomendación también tiene los atributos Thriller y Drama. Supongamos que esos atributos no los consideras importantes, así que elimínalos. Cuando acabes, vuelve a la primera recomendación."
+		msg = "<p>Estás viendo la segunda recomendación del sistema, que es la segunda más explicable.</p> <p>Fíjate en que esta recomendación también tiene los atributos <b>Thriller</b> y <b>Drama</b>. Supongamos que esos atributos no los consideras importantes, así que elimínalos. Cuando acabes, vuelve a la primera recomendación.</p>"
 	} else if (step === 3){
 		//msg = "You can see that the attributes Thriller and Drama that you removed in the second recommendation have also disappeared in this recommendation. Now, remove the attributes Crime, Mistery and Short duration. You are going to watch that now the recommendation with the best explanation to show you is the movie recommendation 3. Next, click on this recommendation 3."
-		msg = "Estás de nuevo en la primera recomendación. Los atributos Drama y Thriller ya no aparecen en esta recomendación, ya que los eliminaste en la recomendación 2 porque no los considerabas relevantes. Viendo la explicación, te das cuenta de que hay otros atributos que no crees que sean importantes, así que eliminas Crimen, Misterio y Corta duración. Al eliminar estos atributos, aparece otra recomendación que es más explicable que la actual. Es la recomendación número 3. Haz click en esa recomendación cuando termines de eliminar los tres atributos que te hemos indicado. "
+		msg = "<p>Estás de nuevo en la primera recomendación. Los atributos <b>Thriller</b> y <b>Drama</b> ya no aparecen en esta recomendación, ya que los eliminaste en la recomendación 2 porque no los considerabas relevantes. </p><p>Viendo la explicación, te das cuenta de que hay otros atributos que no crees que sean importantes, así que eliminas <b>Crimen</b>, <b>Misterio</b> y <b>Corta duración</b>. </p><p>Al eliminar estos atributos, aparece otra recomendación que es más explicable que la actual. Es la recomendación número 3. Haz click en esa recomendación cuando termines de eliminar los tres atributos que te hemos indicado. </p>"
 	} else if (step === 4){
 		//msg = "This is the current most explainable recommendation. Delete the attribute Long duration. Later, click on the recommendation 4."
-		msg = "Esta es la recomendación más explicable actualmente. Elimina el atributo Larga duración y después haz click en la recomendación 4. "
+		msg = "Esta es la recomendación más explicable actualmente. Elimina el atributo <b>Larga duración</b> y después haz click en la recomendación 4. "
 	} else if (step === 5){
-		msg = "Esta es la cuarta recomendación. Fíjate en que la tercera recomendación sigue siendo la que mejor te podemos explicar. Restaura el atributo Larga duración. Después, vuelve a la recomendación de la primera película."
+		msg = "Esta es la cuarta recomendación. Fíjate en que la tercera recomendación sigue siendo la que mejor te podemos explicar. <p>Restaura el atributo <b>Larga duración</b>. </p><p>Después, vuelve a la recomendación de la primera película.</p>"
 	} else if (step === 6){
-		msg = "Mira los pasos que has estado realizando con el sistema en la parte derecha de la ventana. Después, en esta misma recomendación, restaura todos los atributos que has eliminado. Fíjate en que se van restaurando en orden inverso al que fuiste eliminándolos. Revisa los pasos de nuevo. Después haz click en la recomendación 5. "
+		msg = "<p>Mira los <i>Pasos</i> que has estado realizando con el sistema en la parte derecha de la ventana.</p> <p>Después, en esta misma recomendación, <i>restaura</i> todos los atributos que has eliminado. Fíjate en que se van restaurando en orden inverso al que fuiste eliminándolos. </p><p>Revisa los pasos de nuevo. Después haz click en la recomendación 5. </p>"
 	} else if (step === 7){
-		msg = "En esta recomendación juega con los botones de zoom, para ver más grandes o más pequeños los carteles de las películas. Cuando termines, vuelve a la recomendación 1."
+		msg = "<p>En esta recomendación juega con los botones de <i>zoom</i>, para ver más grandes o más pequeños los carteles de las películas.</p> <p>Cuando termines, vuelve a la recomendación 1.</p>"
 	} else if (step === 8){
-		msg = "Ya has terminado el tutorial. Juega libremente con el sistema. Cuando acabes, haz click en el botón La explicación es útil, o La explicación no es útil, según consideres. Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. "
+		msg = "<p>Ya has terminado el tutorial. Juega libremente con el sistema.</p> <p>Cuando acabes, haz click en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil, según consideres</i>. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
 	}
 	
 	bootbox.dialog({
@@ -391,14 +391,14 @@ function finalQuestionnaire(msg, msgStep, like){
 			value: '3',
 		},
 		{
-			text: 'Otro: </br><textarea name="textarea" rows="5" cols="50">Escribe aquí...</textarea>',
+			text: 'Otro: </br><textarea id="feedback" class="disabledbutton" name="textarea" rows="5" cols="35"></textarea>',
 			value: '4',
 			type: 'text'
 		}
 		],
 		callback: function (result) {
 			if(result === null){
-				console.log("cancel");
+				console.log("cancel button");
 			}
 			else if (result.length === 0){
 				// si no ha respondido nada, volver a mostrar el mensaje
