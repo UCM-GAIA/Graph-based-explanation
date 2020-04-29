@@ -18,7 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 
 	if ($input['option'] == 'new') 
 	{
-		$id = createAnswer();
+		$name = $input['name'];
+
+		$id = createAnswer($name);
 
 		$data = array('id' => $id);
 		$json_data = json_encode($data);
@@ -32,18 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$id = $input['id'];
 		$explanation = $input['explanation'];
+		$like = $input['like'];
 		$result = $input['result'];
+		$feedback = $input['feedback'];
 		$num_steps = $input['num_steps'];
 		$actions = $input['actions'];
 
-		saveAnswer($id, $explanation, $result, $num_steps, $actions);
+		saveAnswer($id, $explanation, $like, $result, $feedback, $num_steps, $actions);
 		header("HTTP/1.1 200 OK");
 		header('Access-Control-Allow-Origin: *');
 		exit();
 	}
-
 	
-
 }
 
 // Si no es ninguna de las anteriores, enviamos un error

@@ -7,7 +7,7 @@
  * experimento.
  * @return devuelve el identificador que se ha asignado al usuario.
  */
-function createAnswer() {
+function createAnswer($name) {
 	$current_time = time();
 	$num_answer = count(scandir('./answers')) - 2; // quitamos . y ..
 	$id_user = strval($current_time) . '_' . strval($num_answer + 1);
@@ -15,6 +15,7 @@ function createAnswer() {
 	
 	$file = fopen($file_name, 'w');
 	fwrite($file,"User ID: " . $id_user . "\n");
+	fwrite($file,"Name: " . $name . "\n");
 	fwrite($file, "Time started: " . $current_time . "\n");
 	fclose($file);
 
@@ -30,14 +31,16 @@ function createAnswer() {
  * @param $actions: acciones que ha realizado en el ejemplo, cada
  *                  una de ellas separadas por una coma.
  */
-function saveAnswer($id, $question, $result, $num_steps, $answer) {
+function saveAnswer($id, $question, $like, $result, $feedback, $num_steps, $answer) {
 	$current_time = time();
 	$file_name = './answers/' . $id . '.log';
 
 	$file = fopen($file_name, 'a');
 	fwrite($file, "Explanation: " . $question . "\n");
 	fwrite($file, "Time: " . $current_time . "\n");
+	fwrite($file, "Like: " . $like. "\n");
 	fwrite($file, "Result: " . $result. "\n");
+	fwrite($file, "Feedback: " . $feedback. "\n");
 	fwrite($file, "Num. Steps: " . $num_steps. "\n");
 	fwrite($file, "Actions: " . $answer . "\n");
 	fclose($file);
