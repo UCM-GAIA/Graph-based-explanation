@@ -409,7 +409,7 @@ function finalQuestionnaire(msg, msgStep){
 		],
 		callback: function (result) {
 			if(result === null){
-				console.log("cancel");
+				console.log("cancel button");
 			}
 			else if (result.length === 0){
 				// si no ha respondido nada, volver a mostrar el mensaje
