@@ -369,6 +369,12 @@ function disableSystem(){
 	$("#undo").hide();
 };
 
+// Función auxiliar para activar el text area cuando se pinche sobre él
+function disabledTextArea(){
+	$("#feedback").removeClass("semi_disabledbutton"); 
+	document.querySelector("#feedback").innerText = "";
+};
+
 /*
 	Función auxiliar para crear el prompt con el mini cuestionario del final	
 */
@@ -391,19 +397,16 @@ function finalQuestionnaire(msg, msgStep, like){
 			value: '3',
 		},
 		{
-			text: 'Otro: </br><textarea id="feedback" class="disabledbutton" name="textarea" rows="5" cols="35"></textarea>',
+			text: '<p onclick="disabledTextArea()">Otro: </br><textarea id="feedback" class="semi_disabledbutton" name="textarea" rows="5" cols="35">Escribe aquí...</textarea></p>',
 			value: '4',
 			type: 'text'
 		}
 		],
 		callback: function (result) {
-			if(result === null){
-				console.log("cancel button");
-			}
-			else if (result.length === 0){
+			if (result !== null && result.length === 0){
 				// si no ha respondido nada, volver a mostrar el mensaje
 				finalQuestionnaire(msg, msgStep);
-			} else {
+			} else if(result !== null){
 
 				addStep(msgStep);
 				feedback = $("#feedback").text();
