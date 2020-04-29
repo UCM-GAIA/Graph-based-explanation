@@ -20,6 +20,7 @@ var tutorial_step = 1; // variable que me dice en que paso del tutorial estoy
 var tutorial_changes = 0; // variable para guardar cuantos atributos voy eliminando en el tutorial
 
 const URL_ENCUESTA = "http://localhost:8000/server/explanations.php";
+//const URL_ENCUESTA = "http://mistela.fdi.ucm.es/jljorro/explanations.php";
 
 $(function() {
 	// Incluimos el evento correspondiente a cada uno de los botones.
@@ -96,21 +97,9 @@ function loadExample() {
 		//finishTutorial(); // desactivamos los pop ups del tutorial
 
 		bootbox.prompt("Escribe tu nombre y apellidos:", function(result){ 
+			// Creamos al usuario
+			createUser(result);
 			bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
-		});
-		
-		// mandamos un mensaje al usuario sobre el numero de interacciones
-		//bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
-		
-		// Creamos la encuesta en el server
-		$.ajax({
-			url: URL_ENCUESTA,
-			data: {option: 'new'},
-			type: 'POST',
-			success: function (data) {
-				Cookies.set('id', data['id']);
-				alert(data);
-			}
 		});
 
 	} else if (my_current_example === 5){
@@ -383,7 +372,7 @@ function disableSystem(){
 /*
 	Función auxiliar para crear el prompt con el mini cuestionario del final	
 */
-function finalQuestionnaire(msg, msgStep){
+function finalQuestionnaire(msg, msgStep, like){
 	
 	bootbox.prompt({
 		title: msg,
@@ -415,10 +404,15 @@ function finalQuestionnaire(msg, msgStep){
 				// si no ha respondido nada, volver a mostrar el mensaje
 				finalQuestionnaire(msg, msgStep);
 			} else {
+
 				addStep(msgStep);
+				feedback = $("#feedback").text();
+
+				//TODO - Enviar al server la información
+				sendExample(like, result, feedback);
+
 				disableSystem();
 				my_current_example++; // si el ejemplo es 6 -> pasar al formulario
-				
 				
 				//quitamos el tooltip en caso de que este viendose
 				let index_rec = currentExample.bestExplanationIndex;
@@ -451,7 +445,7 @@ function endExample(like){
 		promptMsg = msg + "¿Qué características del sistema no consideras útiles?";
 	}
 
-	finalQuestionnaire(promptMsg, msg);
+	finalQuestionnaire(promptMsg, msg, like);
 };
 
 /**
@@ -461,9 +455,9 @@ function like() {
 	// Añadimos la acción de "Like"
 	endExample(true);
 
-	if (my_current_example > 1) {
+	/*if (my_current_example > 1) {
 		sendExample('Like');
-	}
+	}*/
 };
 
 /**
@@ -473,9 +467,9 @@ function dislike() {
 	// Añadimos la acción de "Dislike"
 	endExample(false);
 
-	if (my_current_example > 1) {
+	/*if (my_current_example > 1) {
 		sendExample('Dislike');
-	}
+	}*/
 }
 
 /**
@@ -689,6 +683,19 @@ function unDoExample(){
 		
 	}
 
+}
+
+function createUser(name) {
+	// Creamos la encuesta en el server
+	$.ajax({
+		url: URL_ENCUESTA,
+		data: { option: 'new' , name: name},
+		type: 'POST',
+		success: function (data) {
+			Cookies.set('id', data['id']);
+			alert(data);
+		}
+	});
 }
 
 function sendExample(result) {
