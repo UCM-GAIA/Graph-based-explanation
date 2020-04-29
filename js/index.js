@@ -693,7 +693,6 @@ function createUser(name) {
 		type: 'POST',
 		success: function (data) {
 			Cookies.set('id', data['id']);
-			alert(data);
 		}
 	});
 }
@@ -712,7 +711,7 @@ function sendExample(like, result, feedback) {
 			id: Cookies.get('id'),
 			explanation: (my_current_example - 1),
 			like: like,
-			result: result,
+			result: result.toString(),
 			feedback: feedback,
 			num_steps: steps.length,
 			actions: steps_str
