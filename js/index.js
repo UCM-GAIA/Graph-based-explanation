@@ -657,9 +657,10 @@ function createUser(name) {
 function sendExample(like, result, feedback) {
 
 	var steps_str = steps[0];
-	for (var i = 0; i < steps.length; i++) {
-		steps_str += "," + steps[i];
-	}
+	if(steps.length > 2)
+		for (var i = 1; i < steps.length - 1; i++) {
+			steps_str += "," + steps[i];
+		}
 
 	$.ajax({
 		url: URL_ENCUESTA,
