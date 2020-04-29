@@ -20,7 +20,7 @@ var tutorial_step = 1; // variable que me dice en que paso del tutorial estoy
 var tutorial_changes = 0; // variable para guardar cuantos atributos voy eliminando en el tutorial
 
 const URL_ENCUESTA = "http://localhost:8000/server/explanations.php";
-//const URL_ENCUESTA = "http://mistela.fdi.ucm.es/jljorro/explanations.php";
+//const URL_ENCUESTA = "https://mistela.fdi.ucm.es/jorro/explanations.php";
 
 $(function() {
 	// Incluimos el evento correspondiente a cada uno de los botones.
@@ -145,8 +145,8 @@ function loadExample() {
 		
 		
 	} else{ // al final se carga el formulario
-		window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSfxW0qokIiW-2WCjTzCzK_ePdcjjbW_5IKeA5zGq4EbT_Jrqw/viewform?embedded=true");
 		Cookies.remove('id')
+		window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSfxW0qokIiW-2WCjTzCzK_ePdcjjbW_5IKeA5zGq4EbT_Jrqw/viewform?embedded=true");
 	}
 		
 }
@@ -409,7 +409,7 @@ function finalQuestionnaire(msg, msgStep, like){
 			} else if(result !== null){
 
 				addStep(msgStep);
-				feedback = $("#feedback").text();
+				feedback = $("#feedback").val();
 
 				//TODO - Enviar al server la información
 				sendExample(like, result, feedback);
@@ -696,7 +696,6 @@ function createUser(name) {
 		type: 'POST',
 		success: function (data) {
 			Cookies.set('id', data['id']);
-			alert(data);
 		}
 	});
 }
@@ -715,7 +714,7 @@ function sendExample(like, result, feedback) {
 			id: Cookies.get('id'),
 			explanation: (my_current_example - 1),
 			like: like,
-			result: result,
+			result: result.toString(),
 			feedback: feedback,
 			num_steps: steps.length,
 			actions: steps_str
