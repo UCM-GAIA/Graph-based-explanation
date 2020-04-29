@@ -30,6 +30,7 @@ $(function() {
 	$("#btn_zoom_in").click(zoomIn);
 	$("#btn_zoom_out").click(zoomOut);
 	$("#undo").click(unDoExample);	
+	$("#openTutorialButton").click(openTutorial);
 
 	// Cargamos todos los ejemplos de la carpeta data
 	//loadSelect();
@@ -82,6 +83,7 @@ function loadExample() {
 	
 	if(my_current_example === 0){
 		// Tutorial
+		$("#openTutorialButton").removeClass("disabledbutton");
 		document.querySelector('#btn_ver').innerText = "Empezar";
 		
 		if (tutorial_step === 1){
@@ -95,6 +97,8 @@ function loadExample() {
 	} else if (my_current_example === 1) {
 		document.querySelector('#btn_ver').innerText = "Siguiente paso";
 		//finishTutorial(); // desactivamos los pop ups del tutorial
+
+		$("#helpTutorial").remove();
 
 		bootbox.prompt("Escribe tu nombre y apellidos:", function(result){ 
 			// Creamos al usuario
@@ -367,6 +371,7 @@ function disableSystem(){
 	$("#explanations_buttons").addClass("disabledbutton");
 	//$("#undo").addClass("disabledbutton");
 	$("#undo").hide();
+	$("#openTutorialButton").addClass("disabledbutton");
 };
 
 /*
@@ -515,6 +520,10 @@ function finishTutorial(){
 	$('#vis').popover('dispose');
 	$('#undo').popover('dispose');
 };
+
+function openTutorial() {
+	showTutorial(tutorial_step);
+}
 
 /*
 * Función auxiliar para ver el tooltip de mejor explicación
