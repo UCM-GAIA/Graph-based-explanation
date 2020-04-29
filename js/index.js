@@ -369,7 +369,7 @@ function disableSystem(){
 	$("#undo").hide();
 };
 
-// Función auxiliar para activar el text area cuando se pinche sobre él
+// Función auxiliar para activar el text area cuando se pinche sobre ese textarea
 function disabledTextArea(){
 	$("#feedback").removeClass("semi_disabledbutton"); 
 	document.querySelector("#feedback").innerText = "";
