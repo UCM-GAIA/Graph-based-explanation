@@ -19,8 +19,8 @@ var graph_history = new Array();
 var tutorial_step = 1; // variable que me dice en que paso del tutorial estoy
 var tutorial_changes = 0; // variable para guardar cuantos atributos voy eliminando en el tutorial
 
-const URL_ENCUESTA = "http://localhost:8000/server/explanations.php";
-//const URL_ENCUESTA = "https://mistela.fdi.ucm.es/jorro/explanations.php";
+//const URL_ENCUESTA = "http://localhost:8000/server/explanations.php";
+const URL_ENCUESTA = "https://mistela.fdi.ucm.es/jorro/explanations.php";
 
 $(function() {
 	// Incluimos el evento correspondiente a cada uno de los botones.
@@ -79,7 +79,6 @@ function loadExample() {
 		
 		if (tutorial_step === 1){
 			showTutorial(tutorial_step);
-			tutorial_step++;
 		}
 		
 		
@@ -176,7 +175,8 @@ function showTutorial(step){
 function triggersTutorial(num_explanation){
 	// tutorial
 	// Step 2 in the tutorial
-	if (my_current_example === 0 && tutorial_step === 2 && num_explanation === 1){
+	if (my_current_example === 0 && tutorial_step === 1 && num_explanation === 1){
+		tutorial_step++;
 		showTutorial(tutorial_step);
 		tutorial_step++;
 		tutorial_changes = 0;
@@ -485,7 +485,10 @@ function finishTutorial(){
 };
 
 function openTutorial() {
-	showTutorial(tutorial_step);
+	if(tutorial_step === 1)
+		showTutorial(tutorial_step);
+	else
+		showTutorial(tutorial_step-1);
 }
 
 /*
