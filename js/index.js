@@ -698,7 +698,7 @@ function createUser(name) {
 	});
 }
 
-function sendExample(result) {
+function sendExample(like, result, feedback) {
 
 	var steps_str = steps[0];
 	for (var i = 0; i < steps.length; i++) {
@@ -711,7 +711,9 @@ function sendExample(result) {
 			option: 'addActions',
 			id: Cookies.get('id'),
 			explanation: (my_current_example - 1),
+			like: like,
 			result: result,
+			feedback: feedback,
 			num_steps: steps.length,
 			actions: steps_str
 		},
