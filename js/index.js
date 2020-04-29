@@ -20,7 +20,7 @@ var tutorial_step = 1; // variable que me dice en que paso del tutorial estoy
 var tutorial_changes = 0; // variable para guardar cuantos atributos voy eliminando en el tutorial
 
 const URL_ENCUESTA = "http://localhost:8000/server/explanations.php";
-//const URL_ENCUESTA = "http://mistela.fdi.ucm.es/jljorro/explanations.php";
+//const URL_ENCUESTA = "https://mistela.fdi.ucm.es/jorro/explanations.php";
 
 $(function() {
 	// Incluimos el evento correspondiente a cada uno de los botones.
