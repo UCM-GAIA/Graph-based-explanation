@@ -145,8 +145,8 @@ function loadExample() {
 		
 		
 	} else{ // al final se carga el formulario
-		window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSfxW0qokIiW-2WCjTzCzK_ePdcjjbW_5IKeA5zGq4EbT_Jrqw/viewform?embedded=true");
 		Cookies.remove('id')
+		window.location.replace("https://docs.google.com/forms/d/e/1FAIpQLSfxW0qokIiW-2WCjTzCzK_ePdcjjbW_5IKeA5zGq4EbT_Jrqw/viewform?embedded=true");
 	}
 		
 }
@@ -406,7 +406,7 @@ function finalQuestionnaire(msg, msgStep, like){
 			} else {
 
 				addStep(msgStep);
-				feedback = $("#feedback").text();
+				feedback = $("#feedback").val();
 
 				//TODO - Enviar al server la información
 				sendExample(like, result, feedback);
