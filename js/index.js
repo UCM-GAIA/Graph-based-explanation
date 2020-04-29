@@ -377,7 +377,8 @@ function finalQuestionnaire(msg, msgStep, like){
 				feedback = $("#feedback").val();
 
 				//TODO - Enviar al server la información
-				sendExample(like, result, feedback);
+				if (my_current_example > 0)
+					sendExample(like, result, feedback);
 
 				disableSystem();
 				my_current_example++; // si el ejemplo es 6 -> pasar al formulario
