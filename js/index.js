@@ -30,6 +30,7 @@ $(function() {
 	$("#btn_zoom_in").click(zoomIn);
 	$("#btn_zoom_out").click(zoomOut);
 	$("#undo").click(unDoExample);	
+	$("#openTutorialButton").click(openTutorial);
 
 	// Cargamos todos los ejemplos de la carpeta data
 	//loadSelect();
@@ -43,7 +44,6 @@ $(function() {
 
 function askForName(msg){
 	bootbox.prompt(msg, function(result){ 
-		console.log(result);
 		if(result === null || result === ""){
 			askForName("Primero tienes que poner tu nombre y tus apellidos:");
 		} else{
@@ -74,6 +74,7 @@ function loadExample() {
 	
 	if(my_current_example === 0){
 		// Tutorial
+		$("#openTutorialButton").removeClass("disabledbutton");
 		document.querySelector('#btn_ver').innerText = "Empezar";
 		
 		if (tutorial_step === 1){
@@ -86,9 +87,12 @@ function loadExample() {
 		//drawTutorial();
 	} else if (my_current_example === 1) {
 		document.querySelector('#btn_ver').innerText = "Siguiente paso";
-		
-		
+				
 		askForName("Escribe tu nombre y apellidos:");
+
+
+		$("#helpTutorial").remove();
+
 
 	} else if (my_current_example === 5){
 		// Finalización del sistema
@@ -327,6 +331,7 @@ function disableSystem(){
 	$("#explanations_buttons").addClass("disabledbutton");
 	//$("#undo").addClass("disabledbutton");
 	$("#undo").hide();
+	$("#openTutorialButton").addClass("disabledbutton");
 };
 
 // Función auxiliar para activar el text area cuando se pinche sobre ese textarea
@@ -478,6 +483,10 @@ function finishTutorial(){
 	$('#vis').popover('dispose');
 	$('#undo').popover('dispose');
 };
+
+function openTutorial() {
+	showTutorial(tutorial_step);
+}
 
 /*
 * Función auxiliar para ver el tooltip de mejor explicación
