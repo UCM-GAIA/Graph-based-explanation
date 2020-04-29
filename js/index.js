@@ -38,30 +38,22 @@ $(function() {
 	my_current_example = 0;
 	init_svg("#vis");
 	bootbox.alert("¡Haz click en el botón Tutorial para empezar! La primera pantalla contiene un tutorial, tienes que seguir los pasos que el sistema indica. Cuando acabes, pasarás a interactuar con el sistema en sí al hacer click en el botón Empezar.");
-	//bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You have to follow the steps that the system points out. When you finished, you will move to the system itself clicking on the Start button.");
+	
 });
 
-/**
- * Cargamos todos los ejemplos disponibles en el select.
- */
-/*function loadSelect() {
-
-	$.getJSON("data/examples.json", function(data) {
-  		let examples = data["examples"];
-  		
-  		$("#options").empty();
-  		
-  		let options = $("#options").prop("options");
-  		options[options.length] = new Option("Examples...", "", false, true);
-
-  		$.each(examples, function(index, el) {
-  			options[options.length] = new Option(el.text, el.value);
-  		});
-
+function askForName(msg){
+	bootbox.prompt(msg, function(result){ 
+		console.log(result);
+		if(result === null || result === ""){
+			askForName("Primero tienes que poner tu nombre y tus apellidos:");
+		} else{
+			// Creamos al usuario
+			createUser(result);
+			bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
+		}
 	});
-	disableSystem();
-}*/
 
+}
 
 /**
  * Función que carga un grafo en el elemento svg a partir de un fichero JSON.
@@ -94,13 +86,9 @@ function loadExample() {
 		//drawTutorial();
 	} else if (my_current_example === 1) {
 		document.querySelector('#btn_ver').innerText = "Siguiente paso";
-		//finishTutorial(); // desactivamos los pop ups del tutorial
-
-		bootbox.prompt("Escribe tu nombre y apellidos:", function(result){ 
-			// Creamos al usuario
-			createUser(result);
-			bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
-		});
+		
+		
+		askForName("Escribe tu nombre y apellidos:");
 
 	} else if (my_current_example === 5){
 		// Finalización del sistema
@@ -159,24 +147,17 @@ function showTutorial(step){
 	
 	if (step === 1){
 		//msg = "First, you are watching the first recommendation of the system which is also the most explainable. In the upper navigation bar you can see 4 more recommendations for you, with its explanations, sorted by its explainability. See that this current movie recommendation has the attributes Thriller and Drama. Next, click on the second movie recommendation. "
-		msg = "<p>Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar. En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables.</p> <p>Fíjate en que la actual película recomendada tiene los atributos <b>Thriller</b> y <b>Drama</b>. Después, haz click en la segunda película recomendada.</p>";
+		msg = "<p>Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar. En el centro, dentro del círculo morado estás viendo la película recomendada. En el exterior, estás viendo cuáles son las películas que has visto y que son similares a la película recomendada. La película recomendada está unida a estas películas a través de los atributos que tienen en común, dentro del círculo naranja. Estos atributos pueden aparecer en varias recomendaciones.</p> <p>En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. En color verde se indica cuál es la película más explicable, y en azul la que actualmente estás viendo. Si estás viendo la película más explicable, entonces el botón se mantiene en verde.</p> <p><b>Haz click en la segunda película</b> recomendada para ver por qué te la estamos recomendando.</p>";
 	} else if (step === 2){
 		//msg = "You are watching the second recommendation of the system which is the second most explainable. See this movie has the attributes Thriller and Drama. Remove these attributes because you consider them not important. When you finish, go to see the first recommendation again."
-		msg = "<p>Estás viendo la segunda recomendación del sistema, que es la segunda más explicable.</p> <p>Fíjate en que esta recomendación también tiene los atributos <b>Thriller</b> y <b>Drama</b>. Supongamos que esos atributos no los consideras importantes, así que elimínalos. Cuando acabes, vuelve a la primera recomendación.</p>"
+		msg = "<p>Estás viendo la segunda recomendación del sistema, que es la segunda más explicable.</p> <p>Supongamos que los atributos <i>Thriller</i> y <i>Drama</i> no los consideras importantes, así que <b>elimínalos</b>.</p><p> Cuando acabes, <b>vuelve a la primera recomendación</b>.</p>"
 	} else if (step === 3){
 		//msg = "You can see that the attributes Thriller and Drama that you removed in the second recommendation have also disappeared in this recommendation. Now, remove the attributes Crime, Mistery and Short duration. You are going to watch that now the recommendation with the best explanation to show you is the movie recommendation 3. Next, click on this recommendation 3."
-		msg = "<p>Estás de nuevo en la primera recomendación. Los atributos <b>Thriller</b> y <b>Drama</b> ya no aparecen en esta recomendación, ya que los eliminaste en la recomendación 2 porque no los considerabas relevantes. </p><p>Viendo la explicación, te das cuenta de que hay otros atributos que no crees que sean importantes, así que eliminas <b>Crimen</b>, <b>Misterio</b> y <b>Corta duración</b>. </p><p>Al eliminar estos atributos, aparece otra recomendación que es más explicable que la actual. Es la recomendación número 3. Haz click en esa recomendación cuando termines de eliminar los tres atributos que te hemos indicado. </p>"
+		msg = "<p>Estás de nuevo en la primera recomendación. Los atributos <i>Thriller</i> y <i>Drama</i> ya no aparecen en esta recomendación, ya que los eliminaste en la recomendación 2 porque no los considerabas relevantes. </p><p>Viendo la explicación, te das cuenta de que esos atributos te parecen interesantes en esta película. <b>Restaura los atributos <i>Thriller</i> y <i>Drama</i></b>. </p><p>Después, <b>haz click en la recomendación 3</b>.</p>"
 	} else if (step === 4){
-		//msg = "This is the current most explainable recommendation. Delete the attribute Long duration. Later, click on the recommendation 4."
-		msg = "Esta es la recomendación más explicable actualmente. Elimina el atributo <b>Larga duración</b> y después haz click en la recomendación 4. "
+		msg = "<p>En esta recomendación <b>juega con los botones de <i>zoom</i></b>, para ver más grandes o más pequeños los carteles de las películas.</p> <p><b>Mira</b> los <i>Pasos</i> que has estado realizando con el sistema en la parte derecha de la ventana.</p> <p>Cuando termines, <b>vuelve a la recomendación 1</b>.</p>"
 	} else if (step === 5){
-		msg = "Esta es la cuarta recomendación. Fíjate en que la tercera recomendación sigue siendo la que mejor te podemos explicar. <p>Restaura el atributo <b>Larga duración</b>. </p><p>Después, vuelve a la recomendación de la primera película.</p>"
-	} else if (step === 6){
-		msg = "<p>Mira los <i>Pasos</i> que has estado realizando con el sistema en la parte derecha de la ventana.</p> <p>Después, en esta misma recomendación, <i>restaura</i> todos los atributos que has eliminado. Fíjate en que se van restaurando en orden inverso al que fuiste eliminándolos. </p><p>Revisa los pasos de nuevo. Después haz click en la recomendación 5. </p>"
-	} else if (step === 7){
-		msg = "<p>En esta recomendación juega con los botones de <i>zoom</i>, para ver más grandes o más pequeños los carteles de las películas.</p> <p>Cuando termines, vuelve a la recomendación 1.</p>"
-	} else if (step === 8){
-		msg = "<p>Ya has terminado el tutorial. Juega libremente con el sistema.</p> <p>Cuando acabes, haz click en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil, según consideres</i>. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
+		msg = "<p>Ya has terminado el tutorial. <b>Juega libremente con el sistema</b>.</p> <p>Cuando acabes, <b>haz click</b> en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil</i>, según consideres. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
 	}
 	
 	bootbox.dialog({
@@ -204,35 +185,14 @@ function triggersTutorial(num_explanation){
 	}
 	
 	// Step 4 in the tutorial
-	if (my_current_example === 0 && tutorial_step === 4 && num_explanation === 2 && tutorial_changes === 3){
+	if (my_current_example === 0 && tutorial_step === 4 && num_explanation === 2 && tutorial_changes === -2){
 		showTutorial(tutorial_step);
 		tutorial_step++;
 		tutorial_changes = 0;
 	}
 	
 	// Step 5 in the tutorial
-	if (my_current_example === 0 && tutorial_step === 5 && num_explanation === 3 && tutorial_changes === 1){
-		showTutorial(tutorial_step);
-		tutorial_step++;
-		tutorial_changes = 0;
-	}
-	
-	// Step 6 in the tutorial
-	if (my_current_example === 0 && tutorial_step === 6 && num_explanation === 0 && tutorial_changes === -1){
-		showTutorial(tutorial_step);
-		tutorial_step++;
-		tutorial_changes = 0;
-	}
-	
-	// Step 7 in the tutorial
-	if (my_current_example === 0 && tutorial_step === 7 && num_explanation === 4){
-		showTutorial(tutorial_step);
-		tutorial_step++;
-		tutorial_changes = 0;
-	}
-	
-	// Step 7 in the tutorial
-	if (my_current_example === 0 && tutorial_step === 8 && num_explanation === 0){
+	if (my_current_example === 0 && tutorial_step === 5 && num_explanation === 0){
 		showTutorial(tutorial_step);
 		tutorial_step++;
 		tutorial_changes = 0;
@@ -608,18 +568,6 @@ function removeAttribute(attr) {
 				tutorial_changes++;
 			}
 		}
-		// step 4
-		if (tutorial_step === 4 && my_current_example === 0){
-			if (attr === "Crimen" || attr === "Misterio" || attr === "Corta duración"){
-				tutorial_changes++;
-			}
-		}
-		// step 5
-		if (tutorial_step === 5 && my_current_example === 0){
-			if (attr === "Larga duración"){
-				tutorial_changes++;
-			}
-		}
 		
 		
 	} else {
@@ -661,16 +609,10 @@ function unDoExample(){
 		
 		addStep("Recuperado el atributo " + currentAttribute);	
 		
-		// Tutorial step 6
-		if (tutorial_step === 6 && my_current_example === 0){
-			if (currentAttribute === "Larga duración"){
-				tutorial_changes--;
-			}
-		}
 		
-		// Tutorial step 7
-		if (tutorial_step === 7 && my_current_example === 0){
-			if (currentAttribute === "Crimen" || currentAttribute === "Misterio" || currentAttribute === "Corta duración" || currentAttribute === "Drama" || currentAttribute === "Thriller"){
+		// Tutorial step 4
+		if (tutorial_step === 4 && my_current_example === 0){
+			if (currentAttribute === "Drama" || currentAttribute === "Thriller"){
 				tutorial_changes--;
 			}
 		}
