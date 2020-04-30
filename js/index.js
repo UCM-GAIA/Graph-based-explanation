@@ -49,7 +49,6 @@ function askForName(msg){
 		} else{
 			// Creamos al usuario
 			createUser(result);
-			bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
 		}
 	});
 
@@ -150,23 +149,42 @@ function showTutorial(step){
 	
 	if (step === 1){
 		//msg = "First, you are watching the first recommendation of the system which is also the most explainable. In the upper navigation bar you can see 4 more recommendations for you, with its explanations, sorted by its explainability. See that this current movie recommendation has the attributes Thriller and Drama. Next, click on the second movie recommendation. "
-		msg = "<p>Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar. En el centro, dentro del círculo morado estás viendo la película recomendada. En el exterior, estás viendo cuáles son las películas que has visto y que son similares a la película recomendada. La película recomendada está unida a estas películas a través de los atributos que tienen en común, dentro del círculo naranja. Estos atributos pueden aparecer en varias recomendaciones.</p> <p>En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. En color verde se indica cuál es la película más explicable, y en azul la que actualmente estás viendo. Si estás viendo la película más explicable, entonces el botón se mantiene en verde.</p> <p><b>Haz click en la segunda película</b> recomendada para ver por qué te la estamos recomendando.</p>";
+		msg = "<p>Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar: <ul type='disc'> <li>En el <b>centro</b>, dentro del círculo morado, estás viendo <b>la película recomendada</b>. </li> <li>En el <b>exterior</b>, estás viendo cuáles son <b>las películas que has visto y que son similares a la película recomendada</b>.</li> <li>La película recomendada está unida a estas películas a través de <b>los atributos que tienen en común</b>, dentro del círculo naranja. Estos atributos pueden aparecer en varias recomendaciones.</li> </ul></p>";
+		
+		let msg1 = "<p>En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. <ul type='disc'> <li>En color <b>verde</b> se indica cuál es la película más explicable. </li><li>En <b>azul</b> la que actualmente estás viendo. Si estás viendo la película más explicable, entonces el botón se mantiene en verde.</li></ul></p> <p><b>Haz click en la segunda película</b> recomendada para ver por qué te la estamos recomendando.</p>"
+		
+		bootbox.alert({
+			title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
+			message: msg,
+			size: "large",
+			callback: function(){
+				bootbox.alert({
+					title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
+					size: "large",
+					message: msg1
+				})
+			}
+		})
+
 	} else if (step === 2){
 		//msg = "You are watching the second recommendation of the system which is the second most explainable. See this movie has the attributes Thriller and Drama. Remove these attributes because you consider them not important. When you finish, go to see the first recommendation again."
 		msg = "<p>Estás viendo la segunda recomendación del sistema, que es la segunda más explicable.</p> <p>Supongamos que los atributos <i>Thriller</i> y <i>Drama</i> no los consideras importantes, así que <b>elimínalos</b>.</p><p> Cuando acabes, <b>vuelve a la primera recomendación</b>.</p>"
 	} else if (step === 3){
 		//msg = "You can see that the attributes Thriller and Drama that you removed in the second recommendation have also disappeared in this recommendation. Now, remove the attributes Crime, Mistery and Short duration. You are going to watch that now the recommendation with the best explanation to show you is the movie recommendation 3. Next, click on this recommendation 3."
-		msg = "<p>Estás de nuevo en la primera recomendación. Los atributos <i>Thriller</i> y <i>Drama</i> ya no aparecen en esta recomendación, ya que los eliminaste en la recomendación 2 porque no los considerabas relevantes. </p><p>Viendo la explicación, te das cuenta de que esos atributos te parecen interesantes en esta película. <b>Restaura los atributos <i>Thriller</i> y <i>Drama</i></b>. </p><p>Después, <b>haz click en la recomendación 3</b>.</p>"
+		msg = "<p>Estás de nuevo en la primera recomendación. Los atributos <i>Thriller</i> y <i>Drama</i> ya no aparecen en esta recomendación, ya que los eliminaste en la recomendación 2 porque no los considerabas relevantes. </p><p>Viendo la explicación, te das cuenta de que esos atributos te parecen interesantes en esta película. <b>Deshaz la eliminación de los atributos <i>Thriller</i> y <i>Drama</i></b>. </p><p>Después, <b>haz click en la recomendación 3</b>.</p>"
 	} else if (step === 4){
 		msg = "<p>En esta recomendación <b>juega con los botones de <i>zoom</i></b>, para ver más grandes o más pequeños los carteles de las películas.</p> <p><b>Mira</b> los <i>Pasos</i> que has estado realizando con el sistema en la parte derecha de la ventana.</p> <p>Cuando termines, <b>vuelve a la recomendación 1</b>.</p>"
 	} else if (step === 5){
 		msg = "<p>Ya has terminado el tutorial. <b>Juega libremente con el sistema</b>.</p> <p>Cuando acabes, <b>haz click</b> en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil</i>, según consideres. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
 	}
 	
-	bootbox.dialog({
-		title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
-		message: msg
-	})
+	if (step !== 1){
+		bootbox.alert({
+			title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
+			size: "large",
+			message: msg
+		})
+	}
 }
 
 /*
