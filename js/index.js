@@ -386,11 +386,8 @@ function finalQuestionnaire(msg, msgStep, like){
 		}
 		],
 		callback: function (result) {
-			if (result !== null && result.length === 0){
-				// si no ha respondido nada, volver a mostrar el mensaje
-				finalQuestionnaire(msg, msgStep);
-			} else if(result !== null){
-
+			if(result !== null){
+			
 				addStep(msgStep);
 				feedback = $("#feedback").val();
 
