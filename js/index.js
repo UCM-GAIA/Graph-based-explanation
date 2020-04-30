@@ -154,17 +154,23 @@ function showTutorial(step){
 		let msg1 = "<p>En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. <ul type='disc'> <li>En color <b>verde</b> se indica cuál es la película más explicable. </li><li>En <b>azul</b> la que actualmente estás viendo. Si estás viendo la película más explicable, entonces el botón se mantiene en verde.</li></ul></p> <p><b>Haz click en la segunda película</b> recomendada para ver por qué te la estamos recomendando.</p>"
 		
 		bootbox.alert({
-			title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
+			title: "<span style='color: Blue;'>Tutorial: Paso 1.1.</span>",
 			message: msg,
-			size: "large",
+			size: "small",
 			callback: function(){
 				bootbox.alert({
-					title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
-					size: "large",
+					title: "<span style='color: Blue;'>Tutorial: Paso 1.2.</span>",
+					size: "small",
 					message: msg1
-				})
+				}).css({
+					'margin-left': '500px'
+					}
+				);
 			}
-		})
+		}).css({
+			'margin-left': '500px'
+			}
+		);
 
 	} else if (step === 2){
 		//msg = "You are watching the second recommendation of the system which is the second most explainable. See this movie has the attributes Thriller and Drama. Remove these attributes because you consider them not important. When you finish, go to see the first recommendation again."
@@ -181,9 +187,12 @@ function showTutorial(step){
 	if (step !== 1){
 		bootbox.alert({
 			title: "<span style='color: Blue;'>Tutorial: Paso " + step + "</span>",
-			size: "large",
+			size: "small",
 			message: msg
-		})
+		}).css({
+			'margin-left': '500px'
+			}
+		);
 	}
 }
 
