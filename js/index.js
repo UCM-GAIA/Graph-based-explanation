@@ -195,7 +195,7 @@ function showTutorial(step){
 	} else if (step === 4){
 		msg = "<p>En esta recomendación <b>juega con los botones de <i>zoom</i></b>, para ver más grandes o más pequeños los carteles de las películas.</p> <p><b>Mira</b> los <i>Pasos</i> que has estado realizando con el sistema en la parte derecha de la ventana.</p> <p>Cuando termines, <b>vuelve a la recomendación 1</b>.</p>"
 	} else if (step === 5){
-		msg = "<p>Ya has terminado el tutorial. <b>Juega libremente con el sistema</b>.</p> <p>Busca cuál es la explicación que consideras que explica mejor la recomendación que te mostramos, elimina atributos si lo consideraas necesario.</p><p>Cuando acabes, <b>haz click</b> en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil</i>, en el caso de que no encuentres ninguna recomendación que te resulte útil. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
+		msg = "<p>Ya has terminado el tutorial. <b>Juega libremente con el sistema</b>.</p> <p><b>Busca cuál es la explicación que consideras que explica mejor la recomendación que te mostramos</b>, elimina atributos si lo consideras necesario.</p><p>Cuando acabes, <b>haz click</b> en el botón <i>La explicación es útil</i>, si encuentras esa recomendación cuya explicación es la más útil para ti, o <i>La explicación no es útil</i>, en el caso de que no encuentres ninguna explicación útil. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
 	}
 	
 	if (step !== 1){
