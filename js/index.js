@@ -149,28 +149,42 @@ function showTutorial(step){
 	
 	if (step === 1){
 		//msg = "First, you are watching the first recommendation of the system which is also the most explainable. In the upper navigation bar you can see 4 more recommendations for you, with its explanations, sorted by its explainability. See that this current movie recommendation has the attributes Thriller and Drama. Next, click on the second movie recommendation. "
+		
+		let msg0 = "<p><b>El experimento consiste en comprobar cómo de buenas consideras que son las explicaciones</b> para las recomendaciones, no la recomendación en sí. </p><p>Te vas a encontrar cinco recomendaciones de películas, cada una con su explicación. Se trata de encontrar (de las cinco opciones de recomendación que se ofrecen) cuál es la <b>explicación que más te convenza, con la que entiendas mejor por qué se te ha recomendado esa película en concreto</b>. Puedes hacerlo a tu gusto, mirando todas las explicaciones, eliminando atributos que no te interesen, o en cuanto encuentres una que te convenza, puedes terminar. </p><p>En el tutorial vamos a ver un ejemplo de lo que vas a encontrarte.</p>"
+		
 		msg = "<p>Estás viendo la primera recomendación del sistema, que es también la que mejor te podemos explicar: <ul type='disc'> <li>En el <b>centro</b>, dentro del círculo morado, estás viendo <b>la película recomendada</b>. </li> <li>En el <b>exterior</b>, estás viendo cuáles son <b>las películas que has visto y que son similares a la película recomendada</b>.</li> <li>La película recomendada está unida a estas películas a través de <b>los atributos que tienen en común</b>, dentro del círculo naranja. Estos atributos pueden aparecer en varias recomendaciones.</li> </ul></p>";
 		
 		let msg1 = "<p>En la barra superior puedes ver otras cuatro recomendaciones, con sus respectivas explicaciones, ordenadas de más a menos explicables. <ul type='disc'> <li>En color <b>verde</b> se indica cuál es la película más explicable. </li><li>En <b>azul</b> la que actualmente estás viendo. Si estás viendo la película más explicable, entonces el botón se mantiene en verde.</li></ul></p> <p><b>Haz click en la segunda película</b> recomendada para ver por qué te la estamos recomendando.</p>"
 		
 		bootbox.alert({
-			title: "<span style='color: Blue;'>Tutorial: Paso 1.1.</span>",
-			message: msg,
+			title: "<span style='color: Blue;'>Tutorial: Paso 1</span>",
 			size: "small",
+			message: msg0,
 			callback: function(){
 				bootbox.alert({
-					title: "<span style='color: Blue;'>Tutorial: Paso 1.2.</span>",
-					size: "small",
-					message: msg1
-				}).css({
-					'margin-left': '500px'
-					}
-				);
+				title: "<span style='color: Blue;'>Tutorial: Paso 1.1.</span>",
+				message: msg,
+				size: "small",
+				callback: function(){
+					bootbox.alert({
+						title: "<span style='color: Blue;'>Tutorial: Paso 1.2.</span>",
+						size: "small",
+						message: msg1
+					}).css({
+						'margin-left': '500px'
+						}
+					);
+				}
+			}).css({
+				'margin-left': '500px'
+				}
+			);
 			}
 		}).css({
 			'margin-left': '500px'
 			}
 		);
+		
 
 	} else if (step === 2){
 		//msg = "You are watching the second recommendation of the system which is the second most explainable. See this movie has the attributes Thriller and Drama. Remove these attributes because you consider them not important. When you finish, go to see the first recommendation again."
@@ -181,7 +195,7 @@ function showTutorial(step){
 	} else if (step === 4){
 		msg = "<p>En esta recomendación <b>juega con los botones de <i>zoom</i></b>, para ver más grandes o más pequeños los carteles de las películas.</p> <p><b>Mira</b> los <i>Pasos</i> que has estado realizando con el sistema en la parte derecha de la ventana.</p> <p>Cuando termines, <b>vuelve a la recomendación 1</b>.</p>"
 	} else if (step === 5){
-		msg = "<p>Ya has terminado el tutorial. <b>Juega libremente con el sistema</b>.</p> <p>Cuando acabes, <b>haz click</b> en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil</i>, según consideres. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
+		msg = "<p>Ya has terminado el tutorial. <b>Juega libremente con el sistema</b>.</p> <p>Busca cuál es la explicación que consideras que explica mejor la recomendación que te mostramos, elimina atributos si lo consideraas necesario.</p><p>Cuando acabes, <b>haz click</b> en el botón <i>La explicación es útil</i>, o <i>La explicación no es útil</i>, en el caso de que no encuentres ninguna recomendación que te resulte útil. </p><p>Al terminar aparecerá un pequeño cuestionario. Después empezarás a utilizar el sistema propiamente dicho. </p>"
 	}
 	
 	if (step !== 1){
