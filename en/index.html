@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<!-- <link rel="stylesheet" href="css/style.css"> -->
+	<title>Explanation System</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="explain.css">
+
+	<!-- Iconos: Lo pongo aquí para que se cargue al principio -->
+	<script src="https://kit.fontawesome.com/f293aef466.js" crossorigin="anonymous"></script>
+	
+	
+</head>
+<body class="scrollbar-primary">
+
+	<nav class="navbar navbar-light bg-light">
+	  <a class="navbar-brand" href="#">
+	    <img src="img/gaia-color-blanco.png" width="30" height="30" class="d-inline-block align-top" alt="">
+	    Explanation System for Movie Recommendations
+	  </a>
+	</nav>
+
+	<div class="container-fluid">
+		
+		
+		<div class="h-100 row">
+			<div class="h-100 col-md-10">
+
+				<div id="graph_controls" class="row">
+					<div id="explanations_buttons" class="col-md-6 "></div>
+					<div class="col-sd-3">
+						<div class="row">
+							<button id="undo" type="button" class="btn btn-outline-primary btn-block" aria-hidden="true">
+								<i class="fa fa-undo" aria-hidden="true"></i><div id="undo_text" ></div>
+							</button> <!--<i class="fa fa-undo" aria-hidden="true"></i>-->
+						</div>
+					</div>
+					
+					<div class="col-sd-2">
+						<div id="zoomGraph" class="row">
+							<div class="col-md-6">
+								<button id="btn_zoom_in" type="button" class="btn btn-outline-primary btn-block"><i class="fas fa-search-plus"></i></button>
+							</div>
+							<div class="col-md-6">
+								<button id="btn_zoom_out" type="button" class="btn btn-outline-primary btn-block"><i class="fas fa-search-minus"></i></button>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+
+				<div id="container" class="scrollbar-primary"> 
+					<div id="vis"> 
+						
+					</div>
+				</div>
+				
+			</div>
+			<div id="lateral" class="h-100 col-md-2">
+				<div class="h-100 container-fluid">
+					<div class="h-25 row">
+						<div id="buttons" class="h-100 ">
+							<!-- <div id="select_example" class="form-row">
+								<div class="form-group col-md-8">
+									<select id="options" class="form-control">
+										<option selected>Examples...</option>
+										<option value="example1/">Example 1</option>
+										<option value="example2/">Example 2</option>
+										<option value="example3/">Example 3</option>
+										<option value="example4/">Example 4</option>
+										<option value="example5/">Example 5</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<button class="btn btn-outline-primary" id="btn_ver">Select</button>
+								</div>
+							</div> -->
+							
+							<div class="row">
+								<div class="col-sm-12">
+									<button id="btn_ver" type="button" class="btn btn-outline-primary btn-block">Tutorial</button>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-12 evaluateRecommendation">
+									<button id="btn_like" type="button" class="btn btn-outline-success btn-block">The explanation is useful</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 evaluateRecommendation">
+									<button id="btn_dislike" type="button" class="btn btn-outline-danger btn-block">The explanation isn't useful</button>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div id="commands" >
+							<h3><i class="far fa-ballot"></i>Steps</h3>
+						</div>
+						
+						<div class="row">
+							<div class="col-sm-12">
+								<ul id="steps_list">
+								</ul>
+							</div>
+						</div>
+
+						
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	
+</body>
+
+<!-- Scripts visualización de grafos -->
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3-polygon.v1.min.js"></script>
+<script src="js/graph.js"></script>
+
+<!-- Scripts página-->
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<script src="js/explanations.js"></script>
+<script src="js/index.js"></script>
+	
+<!-- Scripts plantilla bootstrap --> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script> 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+
+
+</html>
