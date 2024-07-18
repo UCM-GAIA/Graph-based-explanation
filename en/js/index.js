@@ -37,7 +37,8 @@ $(function() {
 	my_current_example = 1;
 	// my_current_example = 0;
 	init_svg("#vis");
-	bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You have to follow the steps that the system points out. When you finished, you will move to the system itself clicking on the Start button.");
+	loadExample();
+	//bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You have to follow the steps that the system points out. When you finished, you will move to the system itself clicking on the Start button.");
 });
 
 /**
@@ -96,10 +97,10 @@ function loadExample() {
 		//finishTutorial(); // desactivamos los pop ups del tutorial
 
 		// mandamos un mensaje al usuario sobre el numero de interacciones
-		bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
+		// bootbox.alert("¡Recuerda que estamos midiendo el número de veces que interactuas con el sistema! Realiza sólo las acciones que consideres necesarias antes de terminar con cada ejemplo.");
 		
 		// Creamos la encuesta en el server
-		$.ajax({
+		/*$.ajax({
 			url: URL_ENCUESTA,
 			data: {option: 'new'},
 			type: 'POST',
@@ -107,7 +108,7 @@ function loadExample() {
 				Cookies.set('id', data['id']);
 				alert(data);
 			}
-		});
+		});*/
 
 	} else if (my_current_example === 5){
 		// Finalización del sistema
