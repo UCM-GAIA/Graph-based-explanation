@@ -28,7 +28,7 @@ $(function() {
 	$("#btn_dislike").click(dislike);
 	$("#btn_zoom_in").click(zoomIn);
 	$("#btn_zoom_out").click(zoomOut);
-	$("#undo").click(unDoExample);	
+	// $("#undo").click(unDoExample);	
 
 	// Cargamos todos los ejemplos de la carpeta data
 	//loadSelect();
@@ -373,7 +373,7 @@ function disableSystem(){
 	$("#zoomGraph").addClass("disabledbutton");
 	$("#explanations_buttons").addClass("disabledbutton");
 	//$("#undo").addClass("disabledbutton");
-	$("#undo").hide();
+	// $("#undo").hide();
 };
 
 /*
@@ -541,7 +541,7 @@ function finishTutorial(){
 	$('#btn_dislike').popover('dispose');
 	$('#steps_list').popover('dispose');
 	$('#vis').popover('dispose');
-	$('#undo').popover('dispose');
+	// $('#undo').popover('dispose');
 };
 
 /*
@@ -599,12 +599,12 @@ function removeAttribute(attr) {
 		// Guardamos este estado en el historial con su atributo eliminado 
 		graph_history.push(current_example_history); 
 		
-		$("#undo").show();
-		document.querySelector('#undo_text').innerText = "Undo deletion of " + attr;
+		// $("#undo").show();
+		// document.querySelector('#undo_text').innerText = "Undo deletion of " + attr;
 		
 		
 		// habilitar boton de deshacer
-		$("#undo").removeClass("disabledbutton");
+		// $("#undo").removeClass("disabledbutton");
 		
 		// cambian los colores del boton actual
 		let index_rec = currentExample.bestExplanationIndex;
@@ -701,13 +701,13 @@ function unDoExample(){
 		}
 		
 		// si el historial queda vacio, deshabilitar el boton, si no, cambiar el nombre al anterior atributo
-		if (graph_history.length === 0){
+		/*if (graph_history.length === 0){
 			$("#undo").addClass("disabledbutton");
 			$("#undo").hide(); 
 		} else {
 			let lastAttribute = graph_history[graph_history.length-1]['attribute'];
 			document.querySelector('#undo_text').innerText = "Undo deletion of " + lastAttribute;
-		}
+		}*/
 		
 	}
 
