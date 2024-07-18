@@ -93,7 +93,7 @@ function loadExample() {
 		// Dibujar popups del tutorial
 		//drawTutorial();
 	} else if (my_current_example === 1) {
-		document.querySelector('#btn_ver').innerText = "Next Step";
+		// document.querySelector('#btn_ver').innerText = "Next Step";
 		//finishTutorial(); // desactivamos los pop ups del tutorial
 
 		// mandamos un mensaje al usuario sobre el numero de interacciones
