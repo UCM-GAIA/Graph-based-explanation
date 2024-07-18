@@ -34,7 +34,7 @@ $(function() {
 	//loadSelect();
 	
 	disableSystem();
-	my_current_example = 0;
+	my_current_example = 1;
 	init_svg("#vis");
 	bootbox.alert("Click on the Tutorial button to begin! The first window in the system contains a tutorial. You have to follow the steps that the system points out. When you finished, you will move to the system itself clicking on the Start button.");
 });
